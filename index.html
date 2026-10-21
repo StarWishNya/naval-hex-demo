@@ -1,0 +1,1918 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071522">
+  <title>深蓝海域 · 六角海战棋</title>
+  <style>
+:root{color-scheme:dark;--bg:#071522;--bg2:#0a1d2c;--panel:#102535;--panel2:#132c3e;--line:#274253;--muted:#8ca8b7;--text:#eaf7fb;--cyan:#58ded9;--cyan2:#2aaeb9;--coral:#ff8b73;--gold:#e5bb74;--sea:#0a2940;--sea2:#0d344c;--radius:14px}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.38!important}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}[hidden]{display:none!important}#app-shell{min-height:100vh;background:radial-gradient(ellipse at 40% -35%,#17475d 0,transparent 55%),var(--bg)}.topbar{height:68px;padding:0 24px;display:flex;align-items:center;gap:20px;border-bottom:1px solid #294456;background:#091a28e8;position:relative;z-index:3}.brand{display:flex;align-items:center;gap:9px;min-width:190px}.brand-mark{font-size:34px;color:var(--cyan);line-height:1;text-shadow:0 0 18px #2dcbd46b}.brand strong{display:block;font-size:16px;letter-spacing:.14em;line-height:1.2}.brand small{display:block;color:#8fb3c1;font-size:10px;letter-spacing:.2em;margin-top:2px}.top-stats{display:flex;align-items:center;gap:20px;margin:auto;font-size:12px;white-space:nowrap;color:#b1c8d1}.top-stats b{font-size:17px;color:#fff}.top-stats .friend b{color:var(--cyan)}.top-stats .enemy b{color:var(--coral)}#turn-label{border-left:1px solid var(--line);padding-left:20px;color:var(--gold)}.top-actions{display:flex;gap:6px}.ghost,.icon-btn,.text-btn{background:transparent;border:1px solid transparent;color:#acc5d0;border-radius:8px}.ghost{padding:8px 10px;font-size:12px}.ghost:hover,.icon-btn:hover,.text-btn:hover{border-color:#3a6475;color:#fff;background:#183445}.primary,.secondary{border-radius:9px;border:1px solid var(--cyan2);padding:11px 17px;font-weight:700;background:linear-gradient(135deg,#3fd2cc,#1c879a);color:#061c27;box-shadow:0 8px 22px #1bbac133}.primary:hover{filter:brightness(1.13)}.secondary{background:#123143;color:var(--cyan);box-shadow:none}.secondary:hover{background:#1d4455}.large{width:100%;height:48px;display:flex;align-items:center;justify-content:space-between;margin-top:10px}.text-btn{padding:9px 4px;text-align:left;color:var(--muted)}.icon-btn{width:30px;height:30px;border-color:var(--line);font-size:18px;line-height:1}
+.setup-screen{max-width:1420px;margin:auto;padding:36px 32px 80px}.setup-intro{max-width:800px;margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:.27em;text-transform:uppercase;color:var(--cyan);font-weight:700}.setup-intro h1{font-size:clamp(29px,3vw,43px);letter-spacing:.06em;margin:10px 0}.setup-intro p{color:#a8c1cc;line-height:1.75;font-size:14px;margin:0}.setup-layout{display:grid;grid-template-columns:minmax(0,1fr) 275px;gap:24px;align-items:start}.selection-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.class-group{background:#0e2332d9;border:1px solid var(--line);border-radius:var(--radius);padding:16px}.class-heading{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:11px;font-size:15px;font-weight:700}.class-heading small{color:var(--muted);font-size:10px;letter-spacing:.17em}.ship-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.ship-option{position:relative;min-height:178px;text-align:left;background:linear-gradient(160deg,#15354a,#0c2231);border:1px solid #315166;border-radius:10px;padding:13px;color:var(--text);overflow:hidden;transition:background .15s,border-color .15s,transform .15s}.ship-option:hover{transform:translateY(-2px);border-color:#60b6c5}.ship-option.selected{border-color:var(--cyan);box-shadow:inset 0 0 0 1px #58ded988,0 0 20px #43c4c026}.ship-option .ship-accent{position:absolute;inset:0 0 auto 0;height:3px;background:var(--cyan);opacity:.4}.ship-option.selected .ship-accent{opacity:1}.ship-name{font-size:18px;font-weight:800;letter-spacing:.04em;display:block}.ship-en{display:block;color:#82a4b4;font-size:10px;letter-spacing:.12em;margin:3px 0 10px}.ship-silhouette{height:35px;display:block;color:#66cbd1;margin:6px 0;opacity:.8}.ship-meta{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px;font-size:11px;color:#a8c4cd}.ship-meta b{font-weight:700;color:#e5f7fa}.ship-tags{font-size:10px;color:var(--gold);margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.setup-aside{position:sticky;top:86px;padding:21px;background:linear-gradient(155deg,#173648,#102736);border:1px solid #345466;border-radius:var(--radius);box-shadow:0 20px 50px #020a1255}.aside-label{font-size:13px;font-weight:800;letter-spacing:.12em;margin-bottom:17px}.fleet-summary{display:grid;gap:9px;padding-bottom:18px;border-bottom:1px solid var(--line)}.summary-row{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.summary-row b{color:#edf8fb;font-weight:600}.seed-label{display:block;margin:18px 0 8px;font-size:12px;font-weight:700}.seed-label small{font-weight:400;color:var(--muted);display:block;margin-top:3px}.seed-row{display:flex;gap:7px}.seed-row input{min-width:0;flex:1;background:#081e2d;border:1px solid #3b5d6c;border-radius:8px;color:#fff;padding:9px 12px}.seed-row .icon-btn{height:39px;width:39px}.setup-footnote{font-size:10px;line-height:1.6;color:#7596a5;margin:12px 0 0}
+.game-screen{display:grid;grid-template-columns:230px minmax(0,1fr) 286px;min-height:calc(100vh - 208px);padding:12px;gap:12px}.panel{border:1px solid #294a5b;background:linear-gradient(165deg,#102a3a,#0b2030);border-radius:11px;min-width:0}.fleet-panel{display:flex;flex-direction:column;padding:15px 12px;overflow:auto;max-height:calc(100vh - 215px)}.panel-heading{display:flex;justify-content:space-between;align-items:baseline;padding:0 3px 12px;border-bottom:1px solid var(--line);font-size:13px;font-weight:800;letter-spacing:.06em}.panel-heading small{font-size:8px;font-weight:700;letter-spacing:.12em;color:#7095a6}.enemy-heading{margin-top:20px}.fleet-list,.enemy-list{display:grid;gap:7px;padding-top:11px}.fleet-item,.contact-item{border:1px solid #315163;background:#123143;border-radius:8px;padding:9px;position:relative;overflow:hidden}.fleet-item.active{border-color:var(--cyan);background:#174455;box-shadow:inset 3px 0 var(--cyan)}.fleet-item.dead,.contact-item.dead{opacity:.45}.fleet-item .row,.contact-item .row{display:flex;align-items:center;justify-content:space-between;gap:4px}.fleet-item strong,.contact-item strong{font-size:12px}.fleet-item small,.contact-item small{color:#8fb0bf;font-size:10px}.contact-item{background:#2a2b36;border-color:#684b50}.contact-item strong{color:#ffc0b1}.hp-track{height:4px;background:#061926;border-radius:9px;margin-top:8px;overflow:hidden}.hp-track i{display:block;height:100%;background:linear-gradient(90deg,#208e9e,var(--cyan))}.contact-item .hp-track i{background:linear-gradient(90deg,#ca5d62,var(--coral))}.hp-value{font-size:10px;color:#a8c3cb;margin-top:4px}.unknown-contact{font-size:11px;line-height:1.55;color:#8ba9b6;padding:6px}.turn-order{margin-top:auto;padding:18px 3px 2px}.minor-heading{font-size:11px;font-weight:800;color:#b5ced7;letter-spacing:.1em;margin-bottom:10px;display:flex;justify-content:space-between}.queue-list{display:flex;flex-wrap:wrap;gap:5px}.queue-chip{font-size:10px;border-radius:20px;padding:5px 7px;background:#183546;color:#a7bfcc;border:1px solid #2a4a5c;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.queue-chip.friend{border-color:#317d87;color:#81dcd9}.queue-chip.enemy{border-color:#81595a;color:#ffb09c}.queue-chip.current{box-shadow:0 0 0 1px #e5bb74;color:#ffe1a4}
+.battlefield{min-width:0;display:flex;flex-direction:column;background:#0a2030;border:1px solid #294a5b;border-radius:11px;overflow:hidden}.board-toolbar{height:48px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px;border-bottom:1px solid #24495b;background:#102b3b}.board-title{font-size:13px;font-weight:800;white-space:nowrap}.board-title small{color:#7198a9;margin-left:7px;font-size:9px;letter-spacing:.13em}.board-pulse{display:inline-block;background:var(--cyan);height:7px;width:7px;border-radius:50%;box-shadow:0 0 10px var(--cyan);margin-right:5px}.board-tools{display:flex;align-items:center;gap:5px;font-size:11px;color:#8facba;min-width:0}#board-hint{max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:8px}#zoom-label{min-width:43px;text-align:center;color:#bad7de;font-variant-numeric:tabular-nums}.board-viewport{flex:1;min-height:530px;max-height:calc(100vh - 265px);overflow:auto;position:relative;background:radial-gradient(ellipse at center,#12506a 0,#0b354c 45%,#071f32 100%);scrollbar-color:#386c7a #0b2535}.board-viewport:before{content:"";position:absolute;pointer-events:none;inset:0;background:linear-gradient(90deg,#ffffff04 1px,transparent 1px),linear-gradient(#ffffff04 1px,transparent 1px);background-size:28px 28px}#battle-svg{display:block;min-width:100%;height:auto;overflow:visible;user-select:none}.hex-cell{fill:#123e56;stroke:#306075;stroke-width:.75;transition:fill .1s}.hex-cell.alt{fill:#113a51}.hex-cell:hover{fill:#1f6176}.hex-cell.reachable{fill:#24636f;stroke:#56c8cb;stroke-width:1.3;cursor:pointer}.hex-cell.placeable{fill:#506e75;stroke:#e5bb74;cursor:crosshair}.hex-cell.targetable{stroke:#ff9d89;stroke-width:1.6}.island-cell{fill:#344a49;stroke:#697b6d;stroke-width:1.2;pointer-events:none}.island-hatch{fill:#648173;opacity:.35;pointer-events:none}.smoke-cell{fill:#aac0c3;opacity:.27;stroke:#d9e8e7;stroke-width:1;pointer-events:none}.grid-label{font-size:7px;fill:#78a5b5;pointer-events:none}.ship-token{cursor:pointer}.ship-token .hull{fill:#12323f;stroke:var(--cyan);stroke-width:2.2}.ship-token.enemy .hull{fill:#3b2b36;stroke:var(--coral)}.ship-token .wake{fill:none;stroke:#66d5d0;opacity:.35;stroke-width:2}.ship-token.enemy .wake{stroke:var(--coral)}.ship-token .bow{fill:var(--cyan)}.ship-token.enemy .bow{fill:var(--coral)}.ship-token .ship-ring{fill:none;stroke:var(--cyan);stroke-width:1.2;opacity:.6}.ship-token.enemy .ship-ring{stroke:var(--coral)}.ship-token.active .ship-ring{stroke:var(--gold);stroke-width:2.5;opacity:1;filter:drop-shadow(0 0 5px var(--gold))}.ship-token.selected .ship-ring{stroke:#fff;stroke-width:2;opacity:1}.ship-token .ship-name-tag{fill:#0a1b28dd;stroke:#315464;stroke-width:.6}.ship-token.enemy .ship-name-tag{stroke:#825b59}.ship-token .ship-label{fill:#d9f3f5;font-size:9px;font-weight:700;text-anchor:middle;pointer-events:none}.ship-token.enemy .ship-label{fill:#ffd2c5}.ship-token .ship-hp{fill:var(--cyan)}.ship-token.enemy .ship-hp{fill:var(--coral)}.torpedo-marker{fill:#f2c774;stroke:#593a2e;stroke-width:1;pointer-events:none}.attack-line{stroke:#ff9a83;stroke-width:2;stroke-dasharray:6 5;pointer-events:none}.target-ring{fill:none;stroke:#ffc09e;stroke-width:2;stroke-dasharray:5 3;pointer-events:none}.map-legend{min-height:35px;padding:8px 15px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-top:1px solid #25475a;background:#102b3b;font-size:10px;color:#a6c0ca}.legend-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.legend-dot.friend{background:var(--cyan)}.legend-dot.enemy{background:var(--coral)}.legend-dot.island{background:#78907e}.legend-dot.smoke{background:#cbd6d6}.legend-dot.move{background:#60b6b7}.map-tip{margin-left:auto;color:#6f94a5}
+.command-panel{padding:15px 13px;overflow:auto;max-height:calc(100vh - 215px)}.active-card{min-height:112px;padding:13px;margin-top:12px;border:1px solid #3b6571;border-radius:9px;background:linear-gradient(130deg,#18475a,#102d3d)}.active-card.enemy{background:linear-gradient(130deg,#4b3440,#262b38);border-color:#78595b}.active-card .top{display:flex;justify-content:space-between;align-items:baseline}.active-card strong{font-size:19px}.active-card .class-pill{font-size:10px;border:1px solid #71b1b8;border-radius:30px;padding:3px 6px;color:#bce8e9}.active-card .sub{font-size:10px;color:#a0c2cc;margin-top:4px}.active-card .vitals{font-size:11px;color:#c1dbe2;display:flex;justify-content:space-between;margin-top:14px}.active-card .status{font-size:10px;color:var(--gold);margin-top:8px}.action-section{margin-top:17px;padding-top:15px;border-top:1px solid #2b4c5c}.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.action-btn{border:1px solid #3d6473;background:#17394b;color:#d3edf1;border-radius:8px;min-height:36px;padding:7px 8px;font-size:11px;font-weight:700;text-align:center}.action-btn:hover:not(:disabled),.action-btn.selected{border-color:var(--cyan);background:#225269;color:#fff}.action-btn.finish{background:#183d4c;color:var(--gold);border-color:#6b735e}.action-btn.wide{width:100%}.ammo-switch{display:flex;background:#081d2b;border:1px solid #345363;border-radius:8px;padding:3px;gap:3px;margin-bottom:7px}.ammo-switch button{flex:1;background:none;border:0;color:#91aebc;padding:7px 4px;border-radius:6px;font-size:10px;font-weight:700}.ammo-switch button.selected{background:#24576b;color:#e4fdff}.attack-preview{font-size:11px;color:#9db9c6;background:#0b2231;border-left:2px solid #4a7888;border-radius:3px;padding:10px;margin-top:9px;line-height:1.55;min-height:54px}.attack-preview.legal{border-color:var(--cyan)}.attack-preview.illegal{border-color:var(--coral)}.torpedo-row{display:flex;gap:6px}.torpedo-row select{flex:1;min-width:0;background:#0b2535;border:1px solid #3b6170;border-radius:7px;padding:7px;color:#d1e6eb;font-size:11px}.torpedo-row .action-btn{min-width:62px}.consumable-list{display:grid;grid-template-columns:1fr 1fr;gap:6px}.consumable-item{display:flex;flex-direction:column;align-items:start;gap:2px}.consumable-item small{font-weight:400;color:#91b3c0}.sandbox-controls{border-top:1px solid #447582;margin-top:16px;padding-top:15px}.sandbox-controls small{display:block;color:#8eacb8;margin-top:7px;font-size:10px;line-height:1.5}.sandbox-buttons{display:grid;grid-template-columns:1fr 1fr;gap:6px}.place-row{display:grid;grid-template-columns:minmax(0,1fr) 42px 42px 52px;gap:4px;margin-top:7px}.place-row select,.place-row input{width:100%;min-width:0;background:#0b2535;border:1px solid #3b6170;border-radius:7px;padding:5px;color:#d1e6eb;font-size:10px}.place-row .action-btn{font-size:10px;padding:5px;min-height:31px}
+.log-dock{height:127px;border-top:1px solid #2d5363;background:#0b1d2b;padding:8px 20px;overflow:hidden}.log-dock.collapsed{height:37px}.log-heading{display:flex;justify-content:space-between;align-items:center;color:#b8d2db;font-size:11px;font-weight:800;letter-spacing:.08em}.log-heading button{color:#90b4bf;background:transparent;border:0}.battle-log{display:grid;gap:5px;overflow-y:auto;height:91px;padding-top:8px;font-size:11px;color:#9db9c4;scrollbar-color:#396779 transparent}.battle-log .entry{display:flex;gap:9px;line-height:1.35}.battle-log .entry:before{content:"◆";font-size:7px;color:#568998;margin-top:2px}.battle-log .entry.ally:before{color:var(--cyan)}.battle-log .entry.enemy:before{color:var(--coral)}.battle-log .entry.system:before{color:var(--gold)}.battle-log .empty{color:#688d9d}.modal-backdrop{position:fixed;inset:0;z-index:20;background:#020b13c9;display:grid;place-items:center;padding:24px;backdrop-filter:blur(5px)}.modal-card{background:linear-gradient(145deg,#173747,#0b2030);border:1px solid #4d7984;border-radius:16px;box-shadow:0 30px 80px #000a;max-width:670px;width:100%;padding:30px;position:relative}.modal-card h2{font-size:29px;margin:9px 0 20px}.modal-close{position:absolute;top:13px;right:16px;border:0;background:none;color:#bdd6dc;font-size:26px}.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px 25px;margin-bottom:26px}.help-grid b{color:var(--cyan);font-size:13px}.help-grid p{color:#abc5cf;font-size:12px;line-height:1.7;margin:6px 0 0}.result-card{text-align:center;max-width:420px}.result-symbol{color:var(--gold);font-size:52px;margin:20px 0 0}.result-card p{color:#abc5cf;line-height:1.6}.result-actions{display:flex;justify-content:center;gap:10px;margin-top:25px}.toast{position:fixed;z-index:50;left:50%;bottom:25px;transform:translate(-50%,25px);background:#d7f6f2;color:#092b32;border-radius:8px;padding:11px 16px;font-size:12px;font-weight:700;box-shadow:0 12px 35px #0008;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:min(90vw,650px)}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1300px){.game-screen{grid-template-columns:195px minmax(0,1fr) 255px}.topbar{padding:0 12px}.top-stats{gap:10px}.brand{min-width:150px}}@media(max-width:1060px){.game-screen{grid-template-columns:200px minmax(0,1fr);grid-template-areas:"fleet board" "control control"}.fleet-panel{grid-area:fleet;max-height:620px}.battlefield{grid-area:board}.command-panel{grid-area:control;max-height:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}.command-panel>.panel-heading,.command-panel>.active-card,.command-panel>.sandbox-controls{grid-column:1/-1}.board-viewport{min-height:525px;max-height:620px}.top-stats{margin:0}.topbar{flex-wrap:wrap;height:auto;min-height:68px;padding:8px 14px}.top-actions{margin-left:auto}}@media(max-width:760px){.setup-screen{padding:26px 16px}.setup-layout{grid-template-columns:1fr}.selection-grid{grid-template-columns:1fr}.setup-aside{position:static}.game-screen{display:flex;flex-direction:column}.fleet-panel{max-height:none}.fleet-list,.enemy-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.battlefield{order:-1}.board-viewport{min-height:450px;max-height:500px}.command-panel{grid-template-columns:1fr}.command-panel>.panel-heading,.command-panel>.active-card,.command-panel>.sandbox-controls{grid-column:auto}.top-stats{order:3;width:100%;justify-content:space-between}.top-actions{gap:0}.ghost{padding:7px 5px;font-size:10px}.brand{min-width:105px}.brand strong{font-size:13px}.brand-mark{font-size:28px}#board-hint{display:none}.map-tip{display:none}.help-grid{grid-template-columns:1fr}}
+/* Tactical overlays */
+.hex-cell.objective-cell{fill:#1a5360;stroke:#b2945c;stroke-width:1.1}.hex-cell.objective-cell:hover{fill:#2a6771}.hex-cell.objective-cell.reachable{fill:#2b7778;stroke:#e5bb74}.objective-label{fill:#ffdf9a;font-size:9px;font-weight:800;letter-spacing:.06em;paint-order:stroke fill;stroke:#071e2d;stroke-width:2.5;pointer-events:none}.ghost-contact circle{fill:#2b2931bb;stroke:#ffb093;stroke-width:1.5;stroke-dasharray:4 3}.ghost-contact text{fill:#ffd0b9;font-size:10px;font-weight:700;paint-order:stroke fill;stroke:#071e2d;stroke-width:2}.ghost-contact text:last-child{font-size:8px}.torpedo-trail{stroke:#edc27a;stroke-width:2;stroke-dasharray:5 4;opacity:.7}.range-guide .gun-range{fill:none;stroke:#7dd7d5;stroke-width:1;stroke-dasharray:8 6;opacity:.38}.range-guide .detect-range{fill:none;stroke:#f2d19d;stroke-width:1.1;stroke-dasharray:2 5;opacity:.55}.range-guide .turret-arc{fill:none;stroke:#76f0e4;stroke-width:1.6;opacity:.7}.range-guide .torpedo-preview-ray{stroke:#f3c572;stroke-width:1.6;stroke-dasharray:6 4;opacity:.7}.torpedo-note{font-size:10px;color:#8eafba;line-height:1.5;margin-top:8px}
+#battle-svg{min-width:0}
+/* Keep the fitted map compact in the narrow in-app preview. */
+@media(max-width:760px){.board-viewport{min-height:230px;max-height:500px}}
+.smoke-label{fill:#d7e8ef;font-size:9px;font-weight:700;paint-order:stroke fill;stroke:#0a2030;stroke-width:2.5;opacity:.9;pointer-events:none}
+
+.ship-status-badge rect{fill:#352c17;stroke:#ffd16b;stroke-width:1}.ship-status-badge text{fill:#ffe5a6;font-size:10px;font-weight:800;text-anchor:middle;pointer-events:none}.ship-status-badge.burning rect{fill:#4b241b;stroke:#ff935e}.ship-status-badge.burning text{fill:#ffd0ae;font-size:8px}.ship-status-badge.flooding rect{fill:#123a55;stroke:#71caff}.ship-status-badge.flooding text{fill:#bae7ff}#torpedo-ready-label{font-size:10px;color:var(--gold)}
+
+</style>
+</head>
+<body>
+  <div id="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">⬡</span><div><strong>深蓝海域</strong><small>六角海战棋</small></div></div>
+      <div class="top-stats" id="top-stats"><span>第 <b id="round-value">—</b> 轮</span><span class="score friend">我方 <b id="score-friend">0</b></span><span class="score enemy">敌方 <b id="score-enemy">0</b></span><span id="turn-label">准备出航</span></div>
+      <div class="top-actions"><button id="save-btn" class="ghost" type="button" title="导出 JSON 存档">保存</button><button id="load-btn" class="ghost" type="button" title="导入 JSON 存档">读取</button><button id="replay-btn" class="ghost" type="button" title="校验本局命令重放">重放校验</button><button id="help-btn" class="ghost" type="button">帮助</button><button id="restart-btn" class="ghost" type="button">新对局</button><input id="save-file" type="file" accept=".json,application/json" hidden></div>
+    </header>
+
+    <main id="setup-screen" class="setup-screen">
+      <section class="setup-intro"><div class="eyebrow">TACTICAL NAVAL COMBAT / 01</div><h1>组建你的舰队</h1><p>四种舰型各选一艘。舰船按速度依次行动，每回合先机动、再开火；利用六角方位、隐蔽与消耗品夺取海域。</p></section>
+      <div class="setup-layout"><div id="ship-selection" class="selection-grid"></div><aside class="setup-aside"><div class="aside-label">出航配置</div><div id="fleet-summary" class="fleet-summary"></div><label class="seed-label" for="seed-input">随机种子 <small>相同种子可重现战局</small></label><div class="seed-row"><input id="seed-input" type="number" inputmode="numeric" value="2026" min="0" max="4294967295"><button id="random-seed-btn" class="icon-btn" type="button" title="生成种子">↻</button></div><button id="start-btn" class="primary large" type="button">开始战斗 <span>↗</span></button><button id="sandbox-btn" class="secondary large" type="button">进入机制沙盒</button><button id="resume-btn" class="text-btn" type="button">继续自动存档 →</button><p class="setup-footnote">离线可玩 · 本地 JSON 存档 · 全部资源随页面提供</p></aside></div>
+    </main>
+
+    <main id="game-screen" class="game-screen" hidden>
+      <aside class="fleet-panel panel"><div class="panel-heading"><span>舰队态势</span><small>FRIENDLY FLEET</small></div><div id="fleet-list" class="fleet-list"></div><div class="panel-heading enemy-heading"><span>敌情观察</span><small>DETECTED CONTACTS</small></div><div id="enemy-list" class="enemy-list"></div><div class="turn-order"><div class="minor-heading">行动顺序</div><div id="queue-list" class="queue-list"></div></div></aside>
+
+      <section class="battlefield"><div class="board-toolbar"><div class="board-title"><span class="board-pulse"></span> 战术海图 <small>25 × 19 HEX</small></div><div class="board-tools"><span id="board-hint">选择行动，点击海图目标</span><button id="zoom-out" class="icon-btn" type="button" aria-label="缩小">−</button><span id="zoom-label">100%</span><button id="zoom-in" class="icon-btn" type="button" aria-label="放大">＋</button><button id="zoom-reset" class="icon-btn" type="button" title="重置缩放">⌖</button></div></div><div id="board-viewport" class="board-viewport"><svg id="battle-svg" role="img" aria-label="六角海战棋棋盘" xmlns="http://www.w3.org/2000/svg"></svg></div><div class="map-legend"><span><i class="legend-dot friend"></i> 我方</span><span><i class="legend-dot enemy"></i> 已发现敌舰</span><span><i class="legend-dot island"></i> 岛屿</span><span><i class="legend-dot smoke"></i> 烟幕</span><span><i class="legend-dot move"></i> 可达位置</span><span>! 被发现 · 火 着火处数 · 水 进水</span><span class="map-tip">拖动滚动海图 · 双击舰船查看状态</span></div></section>
+
+      <aside class="command-panel panel"><div class="panel-heading"><span>战术指令</span><small>COMMAND DECK</small></div><div id="active-card" class="active-card"></div><div class="action-section"><div class="minor-heading">机动</div><div class="action-grid"><button id="mode-move" class="action-btn" type="button">◇ 移动</button><button id="turn-left" class="action-btn" type="button">↶ 左转 60°</button><button id="turn-right" class="action-btn" type="button">↷ 右转 60°</button><button id="end-turn" class="action-btn finish" type="button">结束行动 →</button></div></div><div class="action-section"><div class="minor-heading">主炮 <span id="gun-ready-label"></span></div><div class="ammo-switch"><button id="ammo-ap" type="button" class="selected">AP 穿甲弹</button><button id="ammo-he" type="button">HE 高爆弹</button></div><button id="mode-fire" class="action-btn wide" type="button">◎ 选择目标开火</button><div id="attack-preview" class="attack-preview">点击已发现敌舰，查看射界与命中预估。</div></div><div class="action-section"><div class="minor-heading">鱼雷 <span id="torpedo-ready-label" aria-live="polite"></span></div><div class="torpedo-row"><select id="torpedo-dir" aria-label="鱼雷航向"><option value="0">→ 东</option><option value="1">↘ 东南</option><option value="2">↙ 西南</option><option value="3">← 西</option><option value="4">↖ 西北</option><option value="5">↗ 东北</option></select><button id="torpedo-fire" class="action-btn" type="button">发射</button></div><div id="torpedo-note" class="torpedo-note"></div></div><div class="action-section"><div class="minor-heading">消耗品</div><div id="consumable-list" class="consumable-list"></div></div><div id="sandbox-controls" class="sandbox-controls" hidden><div class="minor-heading">机制沙盒</div><div class="sandbox-buttons"><button id="sandbox-vision" class="action-btn" type="button">全图视野：关</button><button id="sandbox-manual" class="action-btn" type="button">双方手动：开</button></div><div class="place-row"><select id="place-ship" aria-label="摆位舰船"></select><input id="place-q" type="number" min="0" max="24" placeholder="q" aria-label="q 坐标"><input id="place-r" type="number" min="0" max="18" placeholder="r" aria-label="r 坐标"><button id="place-btn" class="action-btn" type="button">摆位</button></div><small>摆位可快速测试射界、隐蔽与消耗品。</small></div></aside>
+    </main>
+
+    <section id="log-dock" class="log-dock" hidden><div class="log-heading"><span>战斗记录</span><button id="log-toggle" type="button" aria-label="折叠战报">⌄</button></div><div id="battle-log" class="battle-log"></div></section>
+  </div>
+
+  <div id="help-modal" class="modal-backdrop" hidden><div class="modal-card help-card" role="dialog" aria-modal="true" aria-labelledby="help-title"><button class="modal-close" data-close="help-modal" type="button" aria-label="关闭">×</button><div class="eyebrow">CAPTAIN'S BRIEFING</div><h2 id="help-title">舰长手册</h2><div class="help-grid"><div><b>01 · 行动</b><p>舰船按速度先后行动。先点击“移动”，再选可达六角格；转向会改变主炮射界和鱼雷航向。攻击后不能再机动，主炮与鱼雷可在同一次行动中分别使用。</p></div><div><b>02 · 火力</b><p>AP 适合侧舷装甲，HE 可引发火灾。点击已发现敌舰查看角度、跳弹概率及伤害预估，再次点击或按开火按钮射击。鱼雷只能从侧舷发射。</p></div><div><b>03 · 侦察</b><p>敌舰处于隐蔽时不会显示，失去视野后海图仅保留最后已知位置。雷达、水听与烟幕会改变侦察；虚线圈表示射程，近圈表示隐蔽距离。</p></div><div><b>04 · 胜利与存档</b><p>中央半径 2 格的占点区每轮结算，占领累计 5 分获胜；全歼敌军或第 30 轮判定亦可结束。保存会下载 JSON，同一种子与命令序列可重现结果。</p></div></div><button class="primary" data-close="help-modal" type="button">返回海图</button></div></div>
+  <div id="result-modal" class="modal-backdrop" hidden><div class="modal-card result-card" role="dialog" aria-modal="true" aria-labelledby="result-title"><div class="eyebrow">BATTLE COMPLETE</div><div id="result-symbol" class="result-symbol">✦</div><h2 id="result-title">战斗结束</h2><p id="result-detail"></p><div class="result-actions"><button id="result-save" class="secondary" type="button">保存战报</button><button id="result-restart" class="primary" type="button">再来一局</button></div></div></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+/* WoWS WG ASIA 0.15.9.0 snapshot; source details in SOURCES.md. */
+window.Naval = window.Naval || {};
+window.Naval.DATA = {
+  "version": "WG-ASIA-0.15.9.0-iwarship-442",
+  // apDesign 全部是棋盘抽象（design:true）：落点权重、内层厚度、舰内路径、引信行程系数。
+  // 不是 WoWS 装甲剖面或炮口初速。各舰 ap.fuseDelay 才是快照 APbulletDetonator（秒）。
+  "apDesign": {
+    "design": true,
+    "fuseSpeed": 600,
+    "superstructureMm": 19,
+    "locations": {
+      "bow": {"superstructure": 0.22, "ends": 0.70, "side_upper": 0.08, "waterline": 0.00},
+      "stern": {"superstructure": 0.22, "ends": 0.70, "side_upper": 0.08, "waterline": 0.00},
+      "sideGlancing": {"superstructure": 0.20, "ends": 0.30, "side_upper": 0.35, "waterline": 0.15},
+      "sideBeam": {"superstructure": 0.16, "ends": 0.06, "side_upper": 0.42, "waterline": 0.36}
+    },
+    "byClass": {
+      "BB": {
+        "waterlineScale": 1.2,
+        "innerMm": 80,
+        "paths": {
+          "superstructure": 6,
+          "ends": 14,
+          "side_upper": 18,
+          "waterline": {"citadelStart": 3, "citadelEnd": 22, "exit": 26}
+        }
+      },
+      "CA": {
+        "waterlineScale": 1,
+        "innerMm": 25,
+        "paths": {
+          "superstructure": 2.5,
+          "ends": 9,
+          "side_upper": 10,
+          "waterline": {"citadelStart": 4, "citadelEnd": 13, "exit": 16}
+        }
+      },
+      "CL": {
+        "waterlineScale": 0.85,
+        "innerMm": 16,
+        "paths": {
+          "superstructure": 2.5,
+          "ends": 8,
+          "side_upper": 9,
+          "waterline": {"citadelStart": 3.5, "citadelEnd": 11, "exit": 14}
+        }
+      },
+      "DD": {
+        "waterlineScale": 0.55,
+        "innerMm": 70,
+        "paths": {
+          "superstructure": 4,
+          "ends": 8,
+          "side_upper": 9,
+          "waterline": {"citadelStart": 0, "citadelEnd": 0, "exit": 24}
+        }
+      }
+    }
+  },
+  "ships": [
+    {
+      "id": "yamato",
+      "name": "大和",
+      "enName": "Yamato",
+      "cls": "BB",
+      "nation": "Japan",
+      "hp": 97200,
+      "speed": 27.0,
+      "conceal": 17.46,
+      "smokeConceal": 19.27,
+      "range": 26.6,
+      "reload": 30.0,
+      "caliber": 460,
+      "he": {
+        "damage": 7300.0,
+        "pen": 77,
+        "fire": 0.35
+      },
+      "ap": {
+        "damage": 14800.0,
+        "ricStart": 45.0,
+        "ricEnd": 60.0,
+        "normalization": 6.0,
+        "arming": 77.0,
+        "fuseDelay": 0.033,
+        "pen": [
+          [
+            0,
+            883
+          ],
+          [
+            10,
+            671.2
+          ],
+          [
+            14,
+            605.7
+          ],
+          [
+            18,
+            550.4
+          ],
+          [
+            22,
+            504.6
+          ],
+          [
+            26.6,
+            451.9
+          ]
+        ],
+        "penEstimated": true
+      },
+      "armor": {
+        "bow": 32,
+        "stern": 32,
+        "side": 57,
+        "belt": 410
+      },
+      "armorApprox": true,
+      "torpedoProtection": 55,
+      "turrets": [
+        {
+          "name": "1号炮塔",
+          "count": 3,
+          "bearing": 0,
+          "arc": 300,
+          "sourceMount": "HP_JGM_1",
+          "estimatedArc": false
+        },
+        {
+          "name": "2号炮塔",
+          "count": 3,
+          "bearing": 0,
+          "arc": 300,
+          "sourceMount": "HP_JGM_2",
+          "estimatedArc": false
+        },
+        {
+          "name": "3号炮塔",
+          "count": 3,
+          "bearing": 180,
+          "arc": 296,
+          "sourceMount": "HP_JGM_3",
+          "estimatedArc": false
+        }
+      ],
+      "torpedo": null,
+      "consumables": [
+        "dcp",
+        "repair"
+      ],
+      "consumableData": {
+        "dcp": {
+          "charges": -1,
+          "duration": 10.0,
+          "cooldown": 80.0
+        },
+        "repair": {
+          "charges": 4,
+          "duration": 28.0,
+          "cooldown": 80.0,
+          "hpPerSecondPercent": 0.5,
+          "maximumPercent": 14.0,
+          "hullPart": 50,
+          "citadelPart": 10
+        }
+      },
+      "repairParty": {
+        "charges": 4,
+        "duration": 28.0,
+        "cooldown": 80.0,
+        "hpPerSecondPercent": 0.5,
+        "maximumPercent": 14.0
+      },
+      "sourceIndex": "PJSB018"
+    },
+    {
+      "id": "montana",
+      "name": "蒙大拿",
+      "enName": "Montana",
+      "cls": "BB",
+      "nation": "USA",
+      "hp": 96300,
+      "speed": 30.0,
+      "conceal": 17.29,
+      "smokeConceal": 17.38,
+      "range": 23.6,
+      "reload": 30.0,
+      "caliber": 406,
+      "he": {
+        "damage": 5700.0,
+        "pen": 68,
+        "fire": 0.36
+      },
+      "ap": {
+        "damage": 13500.0,
+        "ricStart": 45.0,
+        "ricEnd": 60.0,
+        "normalization": 6.0,
+        "arming": 68.0,
+        "fuseDelay": 0.033,
+        "pen": [
+          [
+            0,
+            847.6
+          ],
+          [
+            10,
+            623.7
+          ],
+          [
+            14,
+            556.3
+          ],
+          [
+            18,
+            500.9
+          ],
+          [
+            22,
+            455.8
+          ],
+          [
+            23.6,
+            437.8
+          ]
+        ],
+        "penEstimated": true
+      },
+      "armor": {
+        "bow": 32,
+        "stern": 32,
+        "side": 38,
+        "belt": 409
+      },
+      "armorApprox": true,
+      "torpedoProtection": 37,
+      "turrets": [
+        {
+          "name": "1号炮塔",
+          "count": 3,
+          "bearing": 0,
+          "arc": 290,
+          "sourceMount": "HP_AGM_1",
+          "estimatedArc": false
+        },
+        {
+          "name": "2号炮塔",
+          "count": 3,
+          "bearing": 0,
+          "arc": 296,
+          "sourceMount": "HP_AGM_2",
+          "estimatedArc": false
+        },
+        {
+          "name": "3号炮塔",
+          "count": 3,
+          "bearing": 180,
+          "arc": 300,
+          "sourceMount": "HP_AGM_3",
+          "estimatedArc": true
+        },
+        {
+          "name": "4号炮塔",
+          "count": 3,
+          "bearing": 180,
+          "arc": 294,
+          "sourceMount": "HP_AGM_4",
+          "estimatedArc": false
+        }
+      ],
+      "torpedo": null,
+      "consumables": [
+        "dcp",
+        "repair"
+      ],
+      "consumableData": {
+        "dcp": {
+          "charges": -1,
+          "duration": 20.0,
+          "cooldown": 80.0
+        },
+        "repair": {
+          "charges": 4,
+          "duration": 28.0,
+          "cooldown": 80.0,
+          // 快照 0.7 是 0.66%/s 的四舍五入，结算使用 hpPerSecondPercentExact。
+          "hpPerSecondPercent": 0.7,
+          "hpPerSecondPercentExact": 0.66,
+          "maximumPercent": 18.5,
+          "hullPart": 50,
+          "citadelPart": 10
+        }
+      },
+      "repairParty": {
+        "charges": 4,
+        "duration": 28.0,
+        "cooldown": 80.0,
+        "hpPerSecondPercent": 0.7,
+        "maximumPercent": 18.5
+      },
+      "sourceIndex": "PASB017"
+    },
+    {
+      "id": "des-moines",
+      "name": "得梅因",
+      "enName": "Des Moines",
+      "cls": "CA",
+      "nation": "USA",
+      "hp": 50600,
+      "speed": 33.0,
+      "conceal": 13.44,
+      "smokeConceal": 8.18,
+      "range": 15.8,
+      "reload": 5.5,
+      "caliber": 203,
+      "he": {
+        "damage": 2800.0,
+        "pen": 34,
+        "fire": 0.14
+      },
+      "ap": {
+        "damage": 5000.0,
+        "ricStart": 60.0,
+        "ricEnd": 67.5,
+        "normalization": 7.0,
+        "arming": 34.0,
+        "fuseDelay": 0.033,
+        "pen": [
+          [
+            0,
+            488.4
+          ],
+          [
+            10,
+            262.3
+          ],
+          [
+            14,
+            210
+          ],
+          [
+            15.8,
+            194.0
+          ]
+        ],
+        "penEstimated": true
+      },
+      "armor": {
+        "bow": 27,
+        "stern": 27,
+        "side": 30,
+        "belt": 152
+      },
+      "armorApprox": true,
+      "torpedoProtection": 7,
+      "turrets": [
+        {
+          "name": "1号炮塔",
+          "count": 3,
+          "bearing": 0,
+          "arc": 298,
+          "sourceMount": "HP_AGM_1",
+          "estimatedArc": false
+        },
+        {
+          "name": "2号炮塔",
+          "count": 3,
+          "bearing": 0,
+          "arc": 298,
+          "sourceMount": "HP_AGM_2",
+          "estimatedArc": false
+        },
+        {
+          "name": "3号炮塔",
+          "count": 3,
+          "bearing": 180,
+          "arc": 300,
+          "sourceMount": "HP_AGM_3",
+          "estimatedArc": false
+        }
+      ],
+      "torpedo": null,
+      "consumables": [
+        "dcp",
+        "hydro",
+        "radar",
+        "repair"
+      ],
+      "consumableData": {
+        "dcp": {
+          "charges": -1,
+          "duration": 5.0,
+          "cooldown": 60.0
+        },
+        "hydro": {
+          "charges": 3,
+          "duration": 100.0,
+          "cooldown": 120.0,
+          "shipRange": 5.0,
+          "torpedoRange": 3.5
+        },
+        "radar": {
+          "charges": 3,
+          "duration": 35.0,
+          "cooldown": 120.0,
+          "range": 10.0
+        },
+        "repair": {
+          "charges": 3,
+          "duration": 28.0,
+          "cooldown": 80.0,
+          "hpPerSecondPercent": 0.5,
+          "maximumPercent": 14.0,
+          "hullPart": 50,
+          "citadelPart": 33
+        }
+      },
+      "repairParty": {
+        "charges": 3,
+        "duration": 28.0,
+        "cooldown": 80.0,
+        "hpPerSecondPercent": 0.5,
+        "maximumPercent": 14.0
+      },
+      "sourceIndex": "PASC020"
+    },
+    {
+      "id": "hindenburg",
+      "name": "兴登堡",
+      "enName": "Hindenburg",
+      "cls": "CA",
+      "nation": "Germany",
+      "hp": 51900,
+      "speed": 31.5,
+      "conceal": 15.54,
+      "smokeConceal": 10.17,
+      "range": 17.8,
+      "reload": 9.8,
+      "caliber": 203,
+      "he": {
+        "damage": 2500.0,
+        "pen": 51,
+        "fire": 0.13
+      },
+      "ap": {
+        "damage": 5900.0,
+        "ricStart": 45.0,
+        "ricEnd": 60.0,
+        "normalization": 7.0,
+        "arming": 34.0,
+        "fuseDelay": 0.033,
+        "pen": [
+          [
+            0,
+            452.6
+          ],
+          [
+            10,
+            234.8
+          ],
+          [
+            14,
+            185
+          ],
+          [
+            17.8,
+            151.6
+          ]
+        ],
+        "penEstimated": true
+      },
+      "armor": {
+        "bow": 27,
+        "stern": 27,
+        "side": 30,
+        "belt": 110
+      },
+      "armorApprox": true,
+      "torpedoProtection": 13,
+      "turrets": [
+        {
+          "name": "1号炮塔",
+          "count": 3,
+          "bearing": 0,
+          "arc": 290,
+          "sourceMount": "HP_GGM_1",
+          "estimatedArc": false
+        },
+        {
+          "name": "2号炮塔",
+          "count": 3,
+          "bearing": 0,
+          "arc": 290,
+          "sourceMount": "HP_GGM_2",
+          "estimatedArc": false
+        },
+        {
+          "name": "3号炮塔",
+          "count": 3,
+          "bearing": 180,
+          "arc": 290,
+          "sourceMount": "HP_GGM_3",
+          "estimatedArc": false
+        },
+        {
+          "name": "4号炮塔",
+          "count": 3,
+          "bearing": 180,
+          "arc": 290,
+          "sourceMount": "HP_GGM_4",
+          "estimatedArc": false
+        }
+      ],
+      "torpedo": {
+        "range": 6,
+        "speed": 64.0,
+        "conceal": 1.3,
+        "damage": 13700.0,
+        "count": 8,
+        "reload": 90.0,
+        "mounts": "4x4",
+        "armingDistanceM": 172.0
+      },
+      "consumables": [
+        "dcp",
+        "hydro",
+        "repair"
+      ],
+      "consumableData": {
+        "dcp": {
+          "charges": -1,
+          "duration": 5.0,
+          "cooldown": 60.0
+        },
+        "hydro": {
+          "charges": 3,
+          "duration": 120.0,
+          "cooldown": 120.0,
+          "shipRange": 6.0,
+          "torpedoRange": 4.0
+        },
+        "repair": {
+          "charges": 4,
+          "duration": 28.0,
+          "cooldown": 80.0,
+          "hpPerSecondPercent": 0.5,
+          "maximumPercent": 14.0,
+          "hullPart": 60,
+          "citadelPart": 33
+        }
+      },
+      "repairParty": {
+        "charges": 4,
+        "duration": 28.0,
+        "cooldown": 80.0,
+        "hpPerSecondPercent": 0.5,
+        "maximumPercent": 14.0
+      },
+      "sourceIndex": "PGSC110"
+    },
+    {
+      "id": "minotaur",
+      "name": "米诺陶",
+      "enName": "Minotaur",
+      "cls": "CL",
+      "nation": "UK",
+      "hp": 43300,
+      "speed": 33.5,
+      "conceal": 11.17,
+      "smokeConceal": 5.4,
+      "range": 15.8,
+      "reload": 3.2,
+      "caliber": 152,
+      "he": null,
+      "ap": {
+        "damage": 3200.0,
+        "ricStart": 60.0,
+        "ricEnd": 75.0,
+        "normalization": 8.5,
+        "arming": 12.0,
+        "fuseDelay": 0.005,
+        "pen": [
+          [
+            0,
+            320
+          ],
+          [
+            10,
+            133.7
+          ],
+          [
+            14,
+            99.8
+          ],
+          [
+            15.8,
+            91.0
+          ]
+        ],
+        "penEstimated": true
+      },
+      "armor": {
+        "bow": 16,
+        "stern": 16,
+        "side": 16,
+        "belt": 101
+      },
+      "armorApprox": true,
+      "torpedoProtection": 13,
+      "turrets": [
+        {
+          "name": "1号炮塔",
+          "count": 2,
+          "bearing": 0,
+          "arc": 318,
+          "sourceMount": "HP_BGM_1",
+          "estimatedArc": false
+        },
+        {
+          "name": "2号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 302,
+          "sourceMount": "HP_BGM_2",
+          "estimatedArc": true
+        },
+        {
+          "name": "3号炮塔",
+          "count": 2,
+          "bearing": 0,
+          "arc": 290,
+          "sourceMount": "HP_BGM_3",
+          "estimatedArc": false
+        },
+        {
+          "name": "4号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 314,
+          "sourceMount": "HP_BGM_4",
+          "estimatedArc": false
+        },
+        {
+          "name": "5号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 312,
+          "sourceMount": "HP_BGM_5",
+          "estimatedArc": false
+        }
+      ],
+      "torpedo": {
+        "range": 10,
+        "speed": 62.0,
+        "conceal": 1.3,
+        "damage": 16767.0,
+        "count": 8,
+        "reload": 96.0,
+        "mounts": "4x4",
+        "armingDistanceM": 166.0
+      },
+      "consumables": [
+        "dcp",
+        "hydro",
+        "smoke",
+        "repair"
+      ],
+      "consumableData": {
+        "dcp": {
+          "charges": -1,
+          "duration": 5.0,
+          "cooldown": 60.0
+        },
+        "hydro": {
+          "charges": 3,
+          "duration": 100.0,
+          "cooldown": 120.0,
+          "shipRange": 5.0,
+          "torpedoRange": 3.5
+        },
+        "smoke": {
+          "charges": 3,
+          "duration": 15.0,
+          "cooldown": 160.0,
+          "cloudDuration": 113.0
+        },
+        "repair": {
+          "charges": 3,
+          "duration": 20.0,
+          "cooldown": 80.0,
+          "hpPerSecondPercent": 2.0,
+          "maximumPercent": 40.0,
+          "hullPart": 50,
+          "citadelPart": 50
+        }
+      },
+      "repairParty": {
+        "charges": 3,
+        "duration": 20.0,
+        "cooldown": 80.0,
+        "hpPerSecondPercent": 2.0,
+        "maximumPercent": 40.0
+      },
+      "sourceIndex": "PBSC110"
+    },
+    {
+      "id": "worcester",
+      "name": "伍斯特",
+      "enName": "Worcester",
+      "cls": "CL",
+      "nation": "USA",
+      "hp": 45400,
+      "speed": 33.0,
+      "conceal": 12.06,
+      "smokeConceal": 6.03,
+      "range": 16.7,
+      "reload": 4.6,
+      "caliber": 152,
+      "he": {
+        "damage": 2200.0,
+        "pen": 30,
+        "fire": 0.12
+      },
+      "ap": {
+        "damage": 3200.0,
+        "ricStart": 45.0,
+        "ricEnd": 60.0,
+        "normalization": 8.5,
+        "arming": 25.0,
+        "fuseDelay": 0.025,
+        "pen": [
+          [
+            0,
+            319.5
+          ],
+          [
+            10,
+            142.3
+          ],
+          [
+            14,
+            108.1
+          ],
+          [
+            16.7,
+            94.3
+          ]
+        ],
+        "penEstimated": true
+      },
+      "armor": {
+        "bow": 25,
+        "stern": 25,
+        "side": 30,
+        "belt": 127
+      },
+      "armorApprox": true,
+      "torpedoProtection": 19,
+      "turrets": [
+        {
+          "name": "1号炮塔",
+          "count": 2,
+          "bearing": 0,
+          "arc": 292,
+          "sourceMount": "HP_AGM_1",
+          "estimatedArc": true
+        },
+        {
+          "name": "2号炮塔",
+          "count": 2,
+          "bearing": 0,
+          "arc": 292,
+          "sourceMount": "HP_AGM_2",
+          "estimatedArc": true
+        },
+        {
+          "name": "3号炮塔",
+          "count": 2,
+          "bearing": 0,
+          "arc": 292,
+          "sourceMount": "HP_AGM_3",
+          "estimatedArc": false
+        },
+        {
+          "name": "4号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 292,
+          "sourceMount": "HP_AGM_4",
+          "estimatedArc": false
+        },
+        {
+          "name": "5号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 292,
+          "sourceMount": "HP_AGM_5",
+          "estimatedArc": true
+        },
+        {
+          "name": "6号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 292,
+          "sourceMount": "HP_AGM_6",
+          "estimatedArc": true
+        }
+      ],
+      "torpedo": null,
+      "consumables": [
+        "dcp",
+        "hydro",
+        "radar",
+        "repair"
+      ],
+      "consumableData": {
+        "dcp": {
+          "charges": -1,
+          "duration": 5.0,
+          "cooldown": 60.0
+        },
+        "hydro": {
+          "charges": 3,
+          "duration": 100.0,
+          "cooldown": 120.0,
+          "shipRange": 5.0,
+          "torpedoRange": 3.5
+        },
+        "radar": {
+          "charges": 3,
+          "duration": 40.0,
+          "cooldown": 120.0,
+          "range": 9.0
+        },
+        "repair": {
+          "charges": 3,
+          "duration": 28.0,
+          "cooldown": 80.0,
+          "hpPerSecondPercent": 0.5,
+          "maximumPercent": 14.0,
+          "hullPart": 50,
+          "citadelPart": 33
+        }
+      },
+      "repairParty": {
+        "charges": 3,
+        "duration": 28.0,
+        "cooldown": 80.0,
+        "hpPerSecondPercent": 0.5,
+        "maximumPercent": 14.0
+      },
+      "sourceIndex": "PASC210"
+    },
+    {
+      "id": "shimakaze",
+      "name": "岛风",
+      "enName": "Shimakaze",
+      "cls": "DD",
+      "nation": "Japan",
+      "hp": 17900,
+      "speed": 39.0,
+      "conceal": 6.9,
+      "smokeConceal": 2.65,
+      "range": 11.4,
+      "reload": 5.74,
+      "caliber": 127,
+      "he": {
+        "damage": 2150.0,
+        "pen": 21,
+        "fire": 0.09
+      },
+      "ap": {
+        "damage": 2200.0,
+        "ricStart": 45.0,
+        "ricEnd": 60.0,
+        "normalization": 10.0,
+        "arming": 21.0,
+        "fuseDelay": 0.01,
+        "pen": [
+          [
+            0,
+            219
+          ],
+          [
+            10,
+            49.3
+          ],
+          [
+            11.4,
+            43.3
+          ]
+        ],
+        "penEstimated": true
+      },
+      "armor": {
+        "bow": 19,
+        "stern": 19,
+        "side": 19,
+        "belt": 19
+      },
+      "armorApprox": true,
+      "torpedoProtection": 0,
+      "turrets": [
+        {
+          "name": "1号炮塔",
+          "count": 2,
+          "bearing": 0,
+          "arc": 300,
+          "sourceMount": "HP_JGM_1",
+          "estimatedArc": false
+        },
+        {
+          "name": "2号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 300,
+          "sourceMount": "HP_JGM_2",
+          "estimatedArc": false
+        },
+        {
+          "name": "3号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 290,
+          "sourceMount": "HP_JGM_3",
+          "estimatedArc": false
+        }
+      ],
+      "torpedo": {
+        "range": 12,
+        "speed": 67.0,
+        "conceal": 1.7,
+        "damage": 23767.0,
+        "count": 15,
+        "reload": 153.0,
+        "mounts": "3x5",
+        "armingDistanceM": 180.0
+      },
+      "consumables": [
+        "dcp",
+        "smoke",
+        "boost"
+      ],
+      "consumableData": {
+        "dcp": {
+          "charges": -1,
+          "duration": 5.0,
+          "cooldown": 40.0
+        },
+        "smoke": {
+          "charges": 3,
+          "duration": 20.0,
+          "cooldown": 160.0,
+          "cloudDuration": 97.0
+        },
+        "boost": {
+          "charges": 3,
+          "duration": 120.0,
+          "cooldown": 120.0,
+          "bonusPercent": 8.0
+        }
+      },
+      "repairParty": null,
+      "sourceIndex": "PJSD012"
+    },
+    {
+      "id": "kleber",
+      "name": "克莱贝尔",
+      "enName": "Kleber",
+      "cls": "DD",
+      "nation": "France",
+      "hp": 21900,
+      "speed": 44.0,
+      "conceal": 9.58,
+      "smokeConceal": 4.15,
+      "range": 13.6,
+      "reload": 7.0,
+      "caliber": 139,
+      "he": {
+        "damage": 2000.0,
+        "pen": 23,
+        "fire": 0.1
+      },
+      "ap": {
+        "damage": 2700.0,
+        "ricStart": 45.0,
+        "ricEnd": 60.0,
+        "normalization": 10.0,
+        "arming": 23.0,
+        "fuseDelay": 0.025,
+        "pen": [
+          [
+            0,
+            273.8
+          ],
+          [
+            10,
+            131.6
+          ],
+          [
+            13.6,
+            104.8
+          ]
+        ],
+        "penEstimated": true
+      },
+      "armor": {
+        "bow": 19,
+        "stern": 19,
+        "side": 19,
+        "belt": 19
+      },
+      "armorApprox": true,
+      "torpedoProtection": 0,
+      "turrets": [
+        {
+          "name": "1号炮塔",
+          "count": 2,
+          "bearing": 0,
+          "arc": 312,
+          "sourceMount": "HP_FGM_1",
+          "estimatedArc": false
+        },
+        {
+          "name": "2号炮塔",
+          "count": 2,
+          "bearing": 0,
+          "arc": 312,
+          "sourceMount": "HP_FGM_2",
+          "estimatedArc": false
+        },
+        {
+          "name": "3号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 312,
+          "sourceMount": "HP_FGM_3",
+          "estimatedArc": false
+        },
+        {
+          "name": "4号炮塔",
+          "count": 2,
+          "bearing": 180,
+          "arc": 312,
+          "sourceMount": "HP_FGM_4",
+          "estimatedArc": false
+        }
+      ],
+      "torpedo": {
+        "range": 8,
+        "speed": 75.0,
+        "conceal": 1.8,
+        "damage": 18400.0,
+        "count": 6,
+        "reload": 77.0,
+        "mounts": "4x3",
+        "armingDistanceM": 201.0
+      },
+      "consumables": [
+        "dcp",
+        "boost",
+        "reload"
+      ],
+      "consumableData": {
+        "dcp": {
+          "charges": -1,
+          "duration": 5.0,
+          "cooldown": 40.0
+        },
+        "boost": {
+          "charges": 3,
+          "duration": 180.0,
+          "cooldown": 90.0,
+          "bonusPercent": 20.0
+        },
+        "reload": {
+          "charges": 4,
+          "duration": 15.0,
+          "cooldown": 100.0,
+          "reloadReductionPercent": 50.0
+        }
+      },
+      "repairParty": null,
+      "sourceIndex": "PFSD110"
+    }
+  ]
+};
+
+</script>
+  <script>
+(function () {
+  'use strict';
+  const N = window.Naval = window.Naval || {};
+  const D = [{q:1,r:0},{q:0,r:1},{q:-1,r:1},{q:-1,r:0},{q:0,r:-1},{q:1,r:-1}];
+  const CENTER={q:12,r:9}, WIDTH=25, HEIGHT=19;
+  const norm=n=>(n%6+6)%6;
+  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+  const key=(q,r)=>q+','+r;
+  const inside=(s,q,r)=>q>=0&&q<s.width&&r>=0&&r<s.height;
+  const def=s=>N.DATA.ships.find(d=>d.id===s.defId);
+  const live=s=>s.hp>0;
+  const effect=(s,id,round)=>Boolean(s.effects[id]&&s.effects[id]>=round);
+  function hexDistance(a,b){return (Math.abs(a.q-b.q)+Math.abs(a.r-b.r)+Math.abs(a.q+a.r-b.q-b.r))/2;}
+  function pos(q,r){return {x:Math.sqrt(3)*(q+r/2),y:1.5*r};}
+  function rand(s){let x=s.rng|0;x^=x<<13;x^=x>>>17;x^=x<<5;s.rng=x>>>0;return s.rng/4294967296;}
+  function log(s,text,team){s.logs.push({text,team});if(s.logs.length>160)s.logs.shift();}
+  function cubeRound(q,r){let x=q,z=r,y=-x-z,rx=Math.round(x),ry=Math.round(y),rz=Math.round(z);const dx=Math.abs(rx-x),dy=Math.abs(ry-y),dz=Math.abs(rz-z);if(dx>dy&&dx>dz)rx=-ry-rz;else if(dy>dz)ry=-rx-rz;else rz=-rx-ry;return {q:rx,r:rz};}
+  function line(a,b){const n=hexDistance(a,b),out=[];for(let i=0;i<=n;i++)out.push(cubeRound(a.q+(b.q-a.q)*i/n,a.r+(b.r-a.r)*i/n));return n?out:[{q:a.q,r:a.r}];}
+  function activeSmokes(s){return s.smokes.filter(x=>x.expires>=s.round);}
+  function smokesCovering(s,q,r){return activeSmokes(s).filter(x=>hexDistance(x,{q,r})<=1);}
+  function smokeAt(s,q,r){return smokesCovering(s,q,r).length>0;}
+  // Smoke checks ignore the cloud covering the target; any other cloud on the path still blocks.
+  function blockedLine(s,a,b,smoke){
+    const own=smoke?smokesCovering(s,b.q,b.r):[];
+    return line(a,b).slice(1,-1).some(p=>s.islands.some(x=>x.q===p.q&&x.r===p.r)||(smoke&&smokesCovering(s,p.q,p.r).some(cloud=>own.indexOf(cloud)<0)));
+  }
+  function revealed(s,team,target){const by=target&&target.revealedBy;return !!by&&(Number(by[team])||0)>=s.round;}
+  function gunfireExposed(s,ship){return (ship.firedUntilRound||0)>=s.round;}
+  function surfaceRadius(s,ship){
+    const d=def(ship),inSmoke=smokeAt(s,ship.q,ship.r),gun=gunfireExposed(s,ship);
+    if(inSmoke)return gun?Number(d.smokeConceal||2):0;
+    if(gun)return Math.max(Number(d.range)||0,Number(d.smokeConceal)||0);
+    return (Number(d.conceal)||0)+((ship.fires||0)>0?2:0);
+  }
+  function spotMethod(s,eye,target){
+    const dist=hexDistance(eye,target);
+    if(dist<=2)return 'near';
+    if(effect(eye,'radar',s.round)&&dist<=Number(def(eye).consumableData?.radar?.range||10))return 'radar';
+    if(effect(eye,'hydro',s.round)&&dist<=Number(def(eye).consumableData?.hydro?.shipRange||5))return 'hydro';
+    const inSmoke=smokeAt(s,target.q,target.r),gun=gunfireExposed(s,target),radius=surfaceRadius(s,target);
+    if(inSmoke){
+      if(!smokeAt(s,eye.q,eye.r)&&gun&&dist<=Number(def(target).smokeConceal||2)&&!blockedLine(s,eye,target,true))return 'gunfire';
+      return null;
+    }
+    if(smokeAt(s,eye.q,eye.r)||dist>radius||blockedLine(s,eye,target,true))return null;
+    if(gun&&dist>(Number(def(target).conceal)||0))return 'gunfire';
+    return 'visual';
+  }
+  function spotTeam(s,team,target){
+    if(!live(target)||target.team===team)return null;
+    if(revealed(s,team,target))return 'revealed';
+    for(const eye of s.ships){if(!live(eye)||eye.team!==team)continue;const method=spotMethod(s,eye,target);if(method)return method;}
+    return null;
+  }
+  function canSee(s,team,target){
+    if(!live(target))return false;
+    if(target.team===team)return true;
+    if(s.sandbox&&s.fullVision)return true;
+    return spotTeam(s,team,target)!==null;
+  }
+  function detection(s,team,shipId){
+    const ship=s.ships.find(x=>x.id===shipId);
+    if(!ship||!live(ship)||ship.team!==team)return {detected:false,method:null,radius:null};
+    const method=spotTeam(s,1-team,ship);
+    return {detected:method!==null,method,radius:surfaceRadius(s,ship)};
+  }
+  function visible(s,team=0){return s.ships.filter(x=>live(x)&&x.team!==team&&canSee(s,team,x)).map(x=>x.id);}
+  function torpedoVisible(s,team=0){return s.torpedoes.filter(t=>t.team===team||(t.detectedBy||[]).includes(team));}
+  function updateTorpedoSight(s){for(const t of s.torpedoes){t.detectedBy=[t.team];for(const team of [0,1]){if(team===t.team)continue;for(const ship of s.ships){if(!live(ship)||ship.team!==team)continue;const dist=hexDistance(ship,t);if(dist<=Number(t.conceal||1.5)||(effect(ship,'hydro',s.round)&&dist<=Number(def(ship).consumableData?.hydro?.torpedoRange||4))){t.detectedBy.push(team);break;}}}}}
+  // Movement points are half-units internally: forward costs 2, turn 60° costs 1. UI shows mp/2.
+  function baseMP(ship){return Math.max(1,Math.floor(def(ship).speed/8))*2;}
+  function boostMP(ship){const d=def(ship),bonus=Number(d.consumableData?.boost?.bonusPercent||20);return Math.max(0,Math.floor(d.speed*(1+bonus/100)/8)*2-baseMP(ship));}
+  function maxMP(s,ship){return baseMP(ship)+(effect(ship,'boost',s.round)?boostMP(ship):0);}
+  function order(s){return s.ships.filter(live).sort((a,b)=>{const av=def(a).speed*(effect(a,'boost',s.round)?1+Number(def(a).consumableData?.boost?.bonusPercent||20)/100:1),bv=def(b).speed*(effect(b,'boost',s.round)?1+Number(def(b).consumableData?.boost?.bonusPercent||20)/100:1);return bv-av||(s.round%2?a.team-b.team:b.team-a.team)||a.id.localeCompare(b.id);}).map(x=>x.id);}
+  function active(s){if(s.winner!==null)return null;return s.ships.find(x=>x.id===s.queue[s.turnIndex])||null;}
+  function activate(s){const a=active(s);if(!a)return;a.mp=maxMP(s,a);a.attacked=false;a.fired=false;a.torped=false;}
+  function initialIslands(){return [{q:8,r:3},{q:9,r:3},{q:16,r:15},{q:15,r:15},{q:11,r:5},{q:13,r:13},{q:7,r:14},{q:17,r:4}];}
+  function create({fleet,enemyFleet,seed=1945,sandbox=false}){
+    if(!Array.isArray(fleet)||!Array.isArray(enemyFleet)||fleet.length!==4||enemyFleet.length!==4)throw new Error('每队需要四艘舰');
+    const ids=[fleet,enemyFleet];for(const list of ids)for(const id of list)if(!N.DATA.ships.some(x=>x.id===id))throw new Error('未知舰船：'+id);
+    const rows=[2,6,12,16],ships=[];
+    for(const team of [0,1])for(let i=0;i<4;i++){const d=N.DATA.ships.find(x=>x.id===ids[team][i]);const charges={},cooldowns={};for(const c of d.consumables||[]){charges[c]=Number(d.consumableData?.[c]?.charges??1);cooldowns[c]=0;}ships.push({id:(team?'e':'p')+i,defId:d.id,team,q:team?22:2,r:team?18-rows[i]:rows[i],heading:team?3:0,hp:d.hp,mp:0,attacked:false,fired:false,torped:false,gunReady:1,gunNextTime:0,torpReady:1,effects:{},charges,cooldowns,fires:0,fireZones:{bow:0,stern:0,mid1:0,mid2:0},flood:0,fireExpires:[],floodExpires:0,repairable:0,repairTicks:null,firedUntilRound:0});}
+    const s={version:2,seed:Number(seed)||1945,rng:(Number(seed)||1945)>>>0,round:1,ships,torpedoes:[],smokes:[],islands:initialIslands(),queue:[],turnIndex:0,scores:[0,0],winner:null,logs:[],history:[],sandbox:!!sandbox,width:WIDTH,height:HEIGHT};
+    s.queue=order(s);activate(s);return s;
+  }
+  function occupancy(s,team,known){const seen=new Set();for(const x of s.ships){if(!live(x))continue;if(x.team===team||!known||canSee(s,team,x))seen.add(key(x.q,x.r));}return seen;}
+  function nodeKey(n){return key(n.q,n.r)+','+n.h;}
+  function paths(s,a,known=true){
+    const max=a.mp,occ=occupancy(s,a.team,known),rocks=new Set(s.islands.map(x=>key(x.q,x.r)));
+    occ.delete(key(a.q,a.r));
+    const best=new Map(),heap=[{q:a.q,r:a.r,h:a.heading,cost:0,prev:null,step:null}];
+    while(heap.length){
+      let bi=0;for(let i=1;i<heap.length;i++)if(heap[i].cost<heap[bi].cost)bi=i;
+      const n=heap.splice(bi,1)[0],k=nodeKey(n),seen=best.get(k);
+      if(seen&&seen.cost<=n.cost)continue;
+      best.set(k,n);
+      if(n.cost>=max)continue;
+      for(const delta of [-1,1]){
+        const nc=n.cost+1;if(nc>max)continue;
+        heap.push({q:n.q,r:n.r,h:norm(n.h+delta),cost:nc,prev:n,step:'turn'});
+      }
+      const d=D[n.h],q=n.q+d.q,r=n.r+d.r,nc=n.cost+2;
+      if(nc<=max&&inside(s,q,r)&&!rocks.has(key(q,r))&&!occ.has(key(q,r)))heap.push({q,r,h:n.h,cost:nc,prev:n,step:'forward'});
+    }
+    return best;
+  }
+  function bestPathTo(s,a,q,r,heading){
+    const nodes=paths(s,a);let best=null;
+    for(const n of nodes.values()){
+      if(n.q!==q||n.r!==r)continue;
+      if(heading!=null&&n.h!==heading)continue;
+      if(!best||n.cost<best.cost||(n.cost===best.cost&&n.h<best.h))best=n;
+    }
+    return best;
+  }
+  function moves(s,id){
+    const a=active(s);if(!a||a.id!==id||a.attacked||a.mp<=0)return [];
+    return [...paths(s,a).values()].filter(n=>n.cost>0).map(n=>({q:n.q,r:n.r,heading:n.h,cost:n.cost/2}))
+      .sort((a,b)=>a.cost-b.cost||a.r-b.r||a.q-b.q||a.heading-b.heading);
+  }
+  function bearing(a,b){const x=pos(b.q,b.r).x-pos(a.q,a.r).x,y=pos(b.q,b.r).y-pos(a.q,a.r).y;return (Math.atan2(y,x)*180/Math.PI+360)%360;}
+  function diffAngle(a,b){return Math.abs(((a-b+540)%360)-180);}
+  function bearingRel(target,actor){return diffAngle(bearing(target,actor),target.heading*60);}
+  function firingTurrets(actor,target){const angle=bearing(actor,target),heading=actor.heading*60,d=def(actor);return (d.turrets||[]).filter(t=>diffAngle(angle,heading+Number(t.bearing||0))<=Number(t.arc||360)/2+1e-9);}
+  // Bow and stern plating are modeled as 60-degree wedges; side plating uses its beam normal.
+  function incidence(target,actor){const rel=diffAngle(bearing(target,actor),target.heading*60);return rel<45?Math.abs(60-rel):rel>135?Math.abs(60-(180-rel)):Math.abs(90-rel);}
+  function zoneArmor(target,actor){const rel=diffAngle(bearing(target,actor),target.heading*60),armor=def(target).armor;if(rel<45)return {zone:'bow',mm:armor.bow};if(rel>135)return {zone:'stern',mm:armor.stern};return {zone:'side',mm:armor.side};}
+  function penetration(ap,dist){const p=ap.pen||[];if(!p.length)return 0;if(dist<=p[0][0])return p[0][1];for(let i=1;i<p.length;i++)if(dist<=p[i][0]){const f=(dist-p[i-1][0])/(p[i][0]-p[i-1][0]);return p[i-1][1]+f*(p[i][1]-p[i-1][1]);}return p[p.length-1][1];}
+  function ricChance(ap,ang,overmatch){if(overmatch)return 0;const low=Number(ap.ricStart??45),high=Number(ap.ricEnd??60);return ang<=low?0:ang>=high?1:(ang-low)/(high-low);}
+  // Hit location, layered plates, and fuse travel are shared by preview and fireGun.
+  function effectiveThickness(plate,angleDeg,normalization){const ang=clamp(angleDeg-Number(normalization||0),0,89);return plate/Math.max(.2,Math.cos(ang*Math.PI/180));}
+  function plateStrike(ap,caliber,penLeft,plateMm,angle){const overmatch=caliber>14.3*plateMm,ric=ricChance(ap,angle,overmatch),effective=effectiveThickness(plateMm,angle,ap.normalization);return {overmatch,ric,effective,pens:penLeft>=effective};}
+  function apLocationWeights(rel,cls){const design=N.DATA.apDesign,bands=design.locations,keys=['superstructure','ends','side_upper','waterline'],w={};
+    if(rel<45||rel>135){const src=rel<45?bands.bow:bands.stern;for(const k of keys)w[k]=src[k];}
+    else{const t=1-Math.abs(rel-90)/45,a=bands.sideGlancing,b=bands.sideBeam;for(const k of keys)w[k]=a[k]+(b[k]-a[k])*t;}
+    w.waterline*=Number(design.byClass[cls].waterlineScale);
+    const sum=keys.reduce((n,k)=>n+w[k],0)||1;for(const k of keys)w[k]/=sum;return w;
+  }
+  function apPlates(target,location,rel){const armor=def(target).armor,design=N.DATA.apDesign,geo=design.byClass[def(target).cls];
+    if(location==='superstructure')return [{mm:Number(design.superstructureMm)}];
+    if(location==='ends')return [{mm:Number(rel>135?armor.stern:rel<45?armor.bow:rel<=90?armor.bow:armor.stern)}];
+    if(location==='side_upper')return [{mm:Number(armor.side)}];
+    const plates=[{mm:Number(armor.belt)}];if(Number(geo.innerMm)>0)plates.push({mm:Number(geo.innerMm)});return plates;
+  }
+  function apPlateSteps(attacker,target,dist,angle,location,rel){const ap=def(attacker).ap,caliber=def(attacker).caliber;let penLeft=penetration(ap,dist),angleNow=angle;const steps=[];
+    for(const plate of apPlates(target,location,rel)){const strike=plateStrike(ap,caliber,penLeft,plate.mm,angleNow);steps.push(strike);if(!strike.pens)break;penLeft-=strike.effective;angleNow=Math.max(0,angleNow-Number(ap.normalization||0));}
+    let resistance=0,armIndex=-1;for(let i=0;i<steps.length;i++){if(!steps[i].pens)break;resistance+=steps[i].effective;if(armIndex<0&&resistance>=Number(ap.arming||0))armIndex=i;}
+    return {steps,armed:armIndex>=0,armIndex};
+  }
+  function apFuseOutcome(attacker,target,location,armed,armIndex){if(!armed)return 'overpen';
+    const geo=N.DATA.apDesign.byClass[def(target).cls],spec=geo.paths[location],setback=armIndex>0?Number(geo.innerSetback||0):0;
+    const travel=Number(def(attacker).ap.fuseDelay||0)*Number(N.DATA.apDesign.fuseSpeed||0);
+    const exit=Math.max(0,(typeof spec==='number'?spec:Number(spec.exit))-setback);
+    if(travel>exit)return 'overpen';
+    if(location==='waterline'&&def(target).cls!=='DD'&&spec&&typeof spec==='object'){const start=Math.max(0,Number(spec.citadelStart)-setback),end=Math.max(0,Number(spec.citadelEnd)-setback);if(end>start&&travel>=start&&travel<=end)return 'citadel';}
+    return 'pen';
+  }
+  function capApDamage(attacker,target,damage){const gun=def(attacker);if(def(target).cls==='DD'&&gun.caliber>=280)return Math.min(damage,gun.ap.damage/10);return damage;}
+  function apDamage(attacker,target,outcome){const max=def(attacker).ap.damage,raw=outcome==='citadel'?max:outcome==='pen'?max/3:outcome==='overpen'?max*.1:0;return capApDamage(attacker,target,raw);}
+  function apLocationExpect(attacker,target,dist,angle,location,rel){const traced=apPlateSteps(attacker,target,dist,angle,location,rel);let reach=1,ric=0,noPen=0;
+    for(const step of traced.steps){ric+=reach*step.ric;reach*=1-step.ric;if(!step.pens){noPen+=reach;reach=0;break;}}
+    const outcome=reach>0?apFuseOutcome(attacker,target,location,traced.armed,traced.armIndex):null;
+    return {ric,noPen,pass:reach,outcome,damage:outcome?apDamage(attacker,target,outcome):0};
+  }
+  function apExpect(attacker,target,dist,angle){const rel=bearingRel(target,attacker),weights=apLocationWeights(rel,def(target).cls),outcomes={ricochet:0,no_pen:0,overpen:0,pen:0,citadel:0};let damage=0;
+    for(const [location,p] of Object.entries(weights)){if(p<=0)continue;const part=apLocationExpect(attacker,target,dist,angle,location,rel);outcomes.ricochet+=p*part.ric;outcomes.no_pen+=p*part.noPen;if(part.pass>0&&part.outcome)outcomes[part.outcome]+=p*part.pass;damage+=p*part.pass*part.damage;}
+    return {damage,outcomes,ricochet:outcomes.ricochet,weights};
+  }
+  function pickLocation(state,weights){const entries=Object.entries(weights);let r=rand(state);for(let i=0;i<entries.length;i++){if(i===entries.length-1||r<entries[i][1])return entries[i][0];r-=entries[i][1];}return entries[entries.length-1][0];}
+  function apSample(state,attacker,target,dist,angle){const rel=bearingRel(target,attacker),location=pickLocation(state,apLocationWeights(rel,def(target).cls)),traced=apPlateSteps(attacker,target,dist,angle,location,rel);
+    for(const step of traced.steps){if(step.ric>=1||(step.ric>0&&rand(state)<step.ric))return {outcome:'ricochet',damage:0,location,damageKind:null};if(!step.pens)return {outcome:'no_pen',damage:0,location,damageKind:null};}
+    const outcome=apFuseOutcome(attacker,target,location,traced.armed,traced.armIndex);return {outcome,damage:apDamage(attacker,target,outcome),location,damageKind:outcome==='ricochet'||outcome==='no_pen'?null:outcome};
+  }
+  function hitChance(d,dist){return clamp(.65-.015*dist-(d.cls==='DD'?.02:0),.18,.65);}
+  function reloadSeconds(s,actor){const base=Number(def(actor).reload),reduction=effect(actor,'reload',s.round)?Number(def(actor).consumableData?.reload?.reloadReductionPercent||50):0;return Math.max(1,base*(1-reduction/100));}
+  function shotCount(s,actor,target){const guns=firingTurrets(actor,target).reduce((n,t)=>n+Number(t.count||0),0),reload=reloadSeconds(s,actor),end=s.round*10;let next=Math.max(Number(actor.gunNextTime??((actor.gunReady-1)*10)),(s.round-1)*10),salvos=0;while(next<end-1e-8){salvos++;next+=reload;}return {guns,shells:guns*salvos,next};}
+  function preview(s,actorId,targetId,ammo){
+    const a=s.ships.find(x=>x.id===actorId),t=s.ships.find(x=>x.id===targetId),out={legal:false,reason:'',distance:0,guns:0,shells:0,angle:0,hitChance:0,ricochetChance:0,expectedDamage:0};
+    if(!a||!t||!live(a)||!live(t)||a.team===t.team){out.reason='目标无效';return out;}
+    if(active(s)?.id!==a.id){out.reason='尚未轮到该舰';return out;}
+    const d=def(a),shell=d[ammo?.toLowerCase()];if(!['AP','HE'].includes(ammo)||!shell){out.reason='该舰没有这种炮弹';return out;}
+    if(a.fired||a.gunReady>s.round){out.reason='主炮尚未就绪';return out;}
+    if(!canSee(s,a.team,t)){out.reason='目标未被发现';return out;}
+    const dist=hexDistance(a,t),count=shotCount(s,a,t);out.distance=dist;out.angle=incidence(t,a);out.guns=count.guns;out.shells=count.shells;out.hitChance=hitChance(d,dist);
+    if(dist>d.range){out.reason='目标超出射程';return out;}
+    if(blockedLine(s,a,t,false)){out.reason='岛屿阻挡炮线';return out;}
+    if(out.guns<=0){out.reason='目标不在炮塔射界内';return out;}
+    const zone=zoneArmor(t,a);
+    if(ammo==='AP'){const result=apExpect(a,t,dist,out.angle);out.ricochetChance=result.ricochet;out.outcomes=result.outcomes;out.expectedDamage=out.shells*out.hitChance*result.damage;}
+    else out.expectedDamage=out.shells*out.hitChance*shell.damage/3*(shell.pen>=zone.mm?1:shell.pen>=19?.25:0);
+    out.legal=true;return out;
+  }
+  const FIRE_ZONES=['bow','stern','mid1','mid2'];
+  const FRC=0.5005;
+  function blankZones(){return {bow:0,stern:0,mid1:0,mid2:0};}
+  function ensureZones(ship){
+    if(!ship.fireZones){
+      ship.fireZones=blankZones();
+      const names=FIRE_ZONES.slice();
+      for(const exp of ship.fireExpires||[]){const name=names.shift();if(name&&exp)ship.fireZones[name]=exp;}
+    }
+    return ship.fireZones;
+  }
+  function syncFires(ship){const z=ensureZones(ship);ship.fires=FIRE_ZONES.reduce((n,k)=>n+(z[k]?1:0),0);return ship.fires;}
+  function igniteZone(s,ship,zoneName){
+    if(effect(ship,'dcp',s.round))return false;
+    const z=ensureZones(ship);
+    if(!Object.prototype.hasOwnProperty.call(z,zoneName)||z[zoneName])return false;
+    z[zoneName]=s.round+(def(ship).cls==='BB'?6:3)-1;
+    syncFires(ship);
+    return true;
+  }
+  function expireFires(ship,round){const z=ensureZones(ship);for(const k of FIRE_ZONES)if(z[k]&&z[k]<=round)z[k]=0;syncFires(ship);}
+  function repairFraction(ship,kind){
+    const item=def(ship).consumableData?.repair;
+    if(!item||!(def(ship).consumables||[]).includes('repair'))return 0;
+    if(kind==='fire'||kind==='flood'||kind==='overpen')return 1;
+    if(kind==='citadel')return Number(item.citadelPart||0)/100;
+    if(kind==='pen'||kind==='he'||kind==='torpedo')return Number(item.hullPart||0)/100;
+    return 0;
+  }
+  function repairRate(ship){const item=def(ship).consumableData?.repair||{};return item.hpPerSecondPercentExact!=null?Number(item.hpPerSecondPercentExact):Number(item.hpPerSecondPercent||0);}
+  function repairSecondsPlan(duration){const d=Number(duration)||0;if(Math.abs(d-20)<1e-6)return [10,10];if(Math.abs(d-28)<1e-6)return [10,10,8];const out=[];let left=d;while(left>1e-9){out.push(Math.min(10,left));left-=Math.min(10,left);}return out.length?out:[10];}
+  function settleRepair(s,ship){
+    if(!ship.repairTicks||!ship.repairTicks.length)return;
+    const seconds=ship.repairTicks.shift();
+    const maxHp=def(ship).hp,pool=Math.max(0,Number(ship.repairable)||0),missing=Math.max(0,maxHp-ship.hp);
+    const heal=Math.min(repairRate(ship)/100*maxHp*seconds,pool,missing);
+    if(heal>0){ship.hp=Math.min(maxHp,ship.hp+heal);ship.repairable=pool-heal;log(s,`${def(ship).name}修理恢复${Math.round(heal)}生命值`,ship.team);}
+    if(!ship.repairTicks.length){
+      const cd=Math.max(1,Math.ceil(Number(def(ship).consumableData?.repair?.cooldown||80)/10));
+      ship.cooldowns.repair=s.round+cd+1;
+      ship.repairTicks=null;
+    }
+  }
+  function hit(s,target,amount,kind){
+    const loss=Math.max(0,Math.min(target.hp,Number(amount)||0));
+    target.hp=clamp(target.hp-(Number(amount)||0),0,def(target).hp);
+    if(loss>0&&kind){const frac=repairFraction(target,kind);if(frac>0)target.repairable=(Number(target.repairable)||0)+loss*frac;}
+  }
+  function fireGun(s,a,t,ammo,p){const d=def(a),shell=d[ammo.toLowerCase()],zone=zoneArmor(t,a);let hits=0,total=0;
+    const previousBloom=a.firedUntilRound;a.firedUntilRound=s.round;const muzzleSpotted=spotTeam(s,1-a.team,a)!==null;a.firedUntilRound=previousBloom;
+    for(let i=0;i<p.shells;i++){if(rand(s)>=p.hitChance)continue;hits++;let amount=0,kind=null;if(ammo==='AP'){
+        const ap=apSample(s,a,t,p.distance,p.angle);amount=ap.damage;kind=ap.damageKind;
+      }else{const superstructure=rand(s)<.25;if(shell.pen>=(superstructure?19:zone.mm)){amount=shell.damage/3;kind='he';}
+        if(!effect(t,'dcp',s.round)&&rand(s)<Number(shell.fire||0)*FRC){const name=(superstructure||zone.zone==='side')?(rand(s)<.5?'mid1':'mid2'):zone.zone;igniteZone(s,t,name);}}
+      hit(s,t,amount,kind);total+=amount;if(!live(t))break;
+    }
+    const plan=shotCount(s,a,t);a.fired=true;a.attacked=true;a.firedUntilRound=muzzleSpotted?s.round+1:s.round;a.gunNextTime=plan.next;a.gunReady=Math.floor((plan.next+1e-8)/10)+1;if(effect(a,'reload',s.round))a.effects.reload=s.round;
+    log(s,`${d.name}主炮射击：命中${hits}发，造成${Math.round(total)}伤害`,a.team);
+    log(s,`${def(t).name}遭主炮命中，损失${Math.round(total)}生命值`,t.team);
+    if(!live(t))log(s,`${def(t).name}沉没`,null);
+  }
+  function consume(s,a,id){const d=def(a),item=d.consumableData?.[id];if(!(d.consumables||[]).includes(id))return '该舰没有此道具';if((a.charges[id]||0)===0)return '道具次数已用尽';if((a.cooldowns[id]||0)>s.round)return '道具尚在冷却';if(effect(a,id,s.round))return '道具已经生效';
+    if(a.charges[id]>0)a.charges[id]--;
+    if(id==='repair'){const plan=repairSecondsPlan(item?.duration);a.repairTicks=plan.slice();a.effects.repair=s.round+plan.length-1;}
+    else{const duration=Math.max(1,Math.ceil(Number(item?.duration||10)/10)),cooldown=Math.max(1,Math.ceil(Number(item?.cooldown||30)/10));
+      a.cooldowns[id]=s.round+cooldown;a.effects[id]=s.round+duration;
+      if(id==='boost')a.mp+=boostMP(a);
+      if(id==='dcp'){a.fireZones=blankZones();a.fires=0;a.flood=0;a.fireExpires=[];a.floodExpires=0;}
+      if(id==='smoke')s.smokes.push({q:a.q,r:a.r,team:a.team,expires:s.round+Math.max(1,Math.ceil(Number(item?.cloudDuration||item?.duration||30)/10))});
+    }
+    log(s,`${d.name}使用${{smoke:'烟幕',boost:'加力',radar:'雷达',hydro:'水听',reload:'重装填',dcp:'损管',repair:'修理'}[id]||id}`,a.team);return null;
+  }
+  function torpHit(s,t,ship){const before=ship.hp,damage=t.damage*(1-Number(def(ship).torpedoProtection||0)/100);for(let i=0;i<(t.warheads||1)&&live(ship);i++){hit(s,ship,damage,'torpedo');if(live(ship)&&!effect(ship,'dcp',s.round)&&rand(s)<.3){ship.flood=1;ship.floodExpires=s.round+2;}}log(s,`${def(ship).name}被鱼雷命中，损失${Math.round(before-ship.hp)}生命值`,ship.team);if(!live(ship))log(s,`${def(ship).name}沉没`,null);}
+  function torpsAt(s,q,r,team){for(const t of [...s.torpedoes])if(t.team!==team&&t.q===q&&t.r===r){const ship=s.ships.find(x=>live(x)&&x.team===team&&x.q===q&&x.r===r);if(ship){torpHit(s,t,ship);s.torpedoes.splice(s.torpedoes.indexOf(t),1);}}}
+  function endTorpedoes(s){for(const t of [...s.torpedoes]){
+      if(t.readyRound>s.round)continue;
+      t.carry+=t.speed/8;
+      let gone=false;
+      while(t.carry>=1&&t.remaining>0&&!gone){t.carry--;const d=D[t.direction];t.q+=d.q;t.r+=d.r;t.remaining--;if(!inside(s,t.q,t.r)||s.islands.some(x=>x.q===t.q&&x.r===t.r)){gone=true;break;}
+        const victim=s.ships.find(x=>live(x)&&x.team!==t.team&&x.q===t.q&&x.r===t.r);if(victim){torpHit(s,t,victim);gone=true;break;}}
+      if(t.remaining<=0)gone=true;if(gone)s.torpedoes.splice(s.torpedoes.indexOf(t),1);
+    }updateTorpedoSight(s);
+  }
+  function score(s){const teams=new Set(s.ships.filter(x=>live(x)&&hexDistance(x,CENTER)<=2).map(x=>x.team));if(teams.size===1){const side=[...teams][0];s.scores[side]++;log(s,`${side===0?'蓝':'红'}方控制中央，得1分`,null);}}
+  function finish(s,roundEnd=false){if(s.winner!==null)return;const alive=[0,1].map(team=>s.ships.some(x=>live(x)&&x.team===team));if(!alive[0]&&!alive[1])s.winner='draw';else if(!alive[0])s.winner=1;else if(!alive[1])s.winner=0;else if(s.scores[0]>=5||s.scores[1]>=5)s.winner=s.scores[0]===s.scores[1]?'draw':s.scores[0]>s.scores[1]?0:1;
+    else if(roundEnd&&s.round>=30){if(s.scores[0]!==s.scores[1])s.winner=s.scores[0]>s.scores[1]?0:1;else {const hp=[0,1].map(team=>{const own=s.ships.filter(x=>x.team===team);return own.reduce((n,x)=>n+x.hp,0)/own.reduce((n,x)=>n+def(x).hp,0);});s.winner=Math.abs(hp[0]-hp[1])<1e-8?'draw':hp[0]>hp[1]?0:1;}}
+    if(s.winner!==null)log(s,s.winner==='draw'?'双方战平':`${s.winner===0?'蓝':'红'}方获胜`,null);
+  }
+  function endRound(s){endTorpedoes(s);for(const ship of s.ships)if(live(ship)){
+      syncFires(ship);
+      if(ship.fires&&!effect(ship,'dcp',s.round))hit(s,ship,def(ship).hp*.03*ship.fires,'fire');
+      if(ship.flood&&!effect(ship,'dcp',s.round))hit(s,ship,def(ship).hp*.025,'flood');
+      expireFires(ship,s.round);
+      ship.fireExpires=(ship.fireExpires||[]).filter(x=>x>s.round);
+      if(ship.floodExpires<=s.round){ship.flood=0;ship.floodExpires=0;}
+      if(live(ship))settleRepair(s,ship);
+      if(!live(ship))log(s,`${def(ship).name}因持续伤害沉没`,null);
+    }
+    score(s);finish(s,true);if(s.winner!==null)return;
+    s.round++;for(const ship of s.ships)for(const id of Object.keys(ship.effects))if(ship.effects[id]<s.round)delete ship.effects[id];
+    s.smokes=s.smokes.filter(x=>x.expires>=s.round);s.queue=order(s);s.turnIndex=0;activate(s);updateTorpedoSight(s);
+  }
+  function advance(s){s.turnIndex++;while(s.turnIndex<s.queue.length&&!live(s.ships.find(x=>x.id===s.queue[s.turnIndex])))s.turnIndex++;if(s.turnIndex>=s.queue.length){s.turnIndex=s.queue.length-1;endRound(s);}else activate(s);}
+  function torpedoDirections(s,id){const a=s.ships.find(x=>x.id===id);if(!a||!def(a).torpedo)return [];return [1,2,4,5].map(offset=>norm(a.heading+offset));}
+  function act(s,command){if(!command||typeof command!=='object')return {ok:false,reason:'无效指令'};const a=active(s);if(!a)return {ok:false,reason:'战斗已经结束'};let reason=null;
+    if(command.type==='turn'){
+      if(a.attacked)reason='攻击后不能转向';else if(![-1,1].includes(command.delta))reason='只能转向60度';else if(a.mp<1)reason='移动点不足';else {a.heading=norm(a.heading+command.delta);a.mp-=1;}
+    }else if(command.type==='move'){
+      if(a.attacked)reason='攻击后不能移动';else if(!Number.isInteger(command.q)||!Number.isInteger(command.r)||!inside(s,command.q,command.r))reason='目标格无效';else{
+        const wantHeading=command.heading==null?null:norm(command.heading);
+        const dest=bestPathTo(s,a,command.q,command.r,wantHeading);if(!dest||!dest.cost)reason='目标格不可达';else{
+          const steps=[];let p=dest;while(p.prev){steps.push(p);p=p.prev;}steps.reverse();
+          for(const step of steps){if(step.step==='forward'){
+              const obstacle=s.ships.find(x=>live(x)&&x.id!==a.id&&x.q===step.q&&x.r===step.r);
+              if(obstacle){if(obstacle.team!==a.team){obstacle.revealedBy=obstacle.revealedBy||{};obstacle.revealedBy[a.team]=s.round+1;}log(s,'前方发现敌舰，航行中断',a.team);break;}
+              a.q=step.q;a.r=step.r;torpsAt(s,a.q,a.r,a.team);a.mp-=2;
+            }else{a.heading=step.h;a.mp-=1;}
+            if(!live(a))break;
+          }
+          updateTorpedoSight(s);
+        }
+      }
+    }else if(command.type==='fire'){
+      const t=s.ships.find(x=>x.id===command.target),p=preview(s,a.id,command.target,command.ammo);if(!p.legal)reason=p.reason;else fireGun(s,a,t,command.ammo,p);
+    }else if(command.type==='torpedo'){
+      const d=def(a);if(!d.torpedo)reason='该舰没有鱼雷';else if(a.torped||a.torpReady>s.round)reason='鱼雷尚未就绪';else if(!torpedoDirections(s,a.id).includes(command.direction))reason='鱼雷方向不在舷侧射界';else{
+        const count=Math.max(1,Number(d.torpedo.count)||1),allowed=torpedoDirections(s,a.id),offsets=[-1,0,1].filter(offset=>allowed.includes(norm(command.direction+offset))),lanes=Math.min(offsets.length,count);
+        for(let i=0;i<lanes;i++){const offset=offsets[i],warheads=Math.floor(count/lanes)+(i<count%lanes?1:0);s.torpedoes.push({id:'t'+s.round+'-'+a.id+'-'+offset,team:a.team,owner:a.id,q:a.q,r:a.r,direction:norm(command.direction+offset),heading:norm(command.direction+offset),remaining:Math.floor(d.torpedo.range),speed:d.torpedo.speed,conceal:d.torpedo.conceal,damage:d.torpedo.damage,warheads,carry:0,readyRound:s.round+1,detectedBy:[a.team]});}
+        a.torped=true;a.attacked=true;a.torpReady=s.round+Math.max(1,Math.ceil(d.torpedo.reload/10));log(s,`${d.name}发射鱼雷`,a.team);updateTorpedoSight(s);
+      }
+    }else if(command.type==='consumable')reason=consume(s,a,command.id);
+    else if(command.type==='end'){advance(s);}
+    else reason='未知指令';
+    if(reason)return {ok:false,reason};if(command.type==='consumable')updateTorpedoSight(s);s.history.push(JSON.parse(JSON.stringify(command)));if(s.winner===null&&command.type!=='end')finish(s);if(command.type==='move'&&!live(a)&&s.winner===null)advance(s);return {ok:true};
+  }
+  N.Engine={create,active,visible,torpedoVisible,torpedoDirections,moves,preview,act,hexDistance,pos,dirs:D,detection,apExpect,apSample};
+})();
+
+</script>
+  <script>
+(function () {
+  'use strict';
+  const N = window.Naval = window.Naval || {};
+  // Only a redacted observation is accepted here. No global battle state is read.
+  N.AI = {
+    choose(o) {
+      if (!o || !o.actor) return {type:'end'};
+      const a=o.actor, d=o.definition, choices=o.attacks.filter(x=>x.preview.legal);
+      choices.sort((x,y)=>y.preview.expectedDamage-x.preview.expectedDamage);
+      const wounded = a.hp<d.hp*0.8 && (a.repairable||0)>0;
+      if (o.stage===0) {
+        if (a.fires || a.flood) return o.available.includes('dcp') ? {type:'consumable',id:'dcp'} : null;
+        if (o.available.includes('repair') && wounded) return {type:'consumable',id:'repair'};
+        if (o.available.includes('radar') && o.enemies.length<2 && o.centerDistance<10) return {type:'consumable',id:'radar'};
+        if (o.available.includes('hydro') && (o.torpedoes.length || o.centerDistance<7)) return {type:'consumable',id:'hydro'};
+        if (o.available.includes('smoke') && a.hp<d.hp*.55 && o.enemies.length) return {type:'consumable',id:'smoke'};
+        if (o.available.includes('boost') && o.centerDistance>3) return {type:'consumable',id:'boost'};
+      }
+      if (o.stage<=1 && o.available.includes('repair') && a.hp<d.hp*0.8 && (a.repairable||0)>0) return {type:'consumable',id:'repair'};
+      if (o.stage<=1 && !a.attacked && o.moves.length) {
+        let best=null;
+        for (const m of o.moves) {
+          const center=hexDistance(m,o.center);
+          let score=-center*3;
+          if(center<=2) score+=14;
+          for(const e of o.enemies){
+            const dist=hexDistance(m,e);
+            const preferred=d.cls==='BB'?10:d.cls==='DD'?6:8;
+            score-=Math.abs(dist-preferred)*.8;
+            if(dist<=d.range) score+=3;
+            if(a.hp<d.hp*.3 && dist<6) score-=(6-dist)*4;
+          }
+          for(const t of o.torpedoes) if(hexDistance(m,t)<2) score-=25;
+          score-=m.cost*.08;
+          if(!best || score>best.score) best={...m,score};
+        }
+        if(best && (best.q!==a.q || best.r!==a.r || (best.heading!=null&&best.heading!==a.heading))){
+          const cmd={type:'move',q:best.q,r:best.r};if(best.heading!=null)cmd.heading=best.heading;return cmd;
+        }
+      }
+      if (o.stage<=2 && choices.length && o.available.includes('reload')) return {type:'consumable',id:'reload'};
+      if (choices.length && !a.fired) return {type:'fire',target:choices[0].target,ammo:choices[0].ammo};
+      if (!a.torped && d.torpedo && a.torpReady<=o.round && o.enemies.length) {
+        const target=o.enemies.filter(e=>hexDistance(a,e)<=d.torpedo.range).sort((x,y)=>hexDistance(a,x)-hexDistance(a,y))[0];
+        if(target){
+          let bestDir=0,best=Infinity;
+          const dirs=[{q:1,r:0},{q:0,r:1},{q:-1,r:1},{q:-1,r:0},{q:0,r:-1},{q:1,r:-1}];
+          dirs.forEach((v,i)=>{if(o.torpedoDirections&&!o.torpedoDirections.includes(i))return;const p={q:a.q+v.q*hexDistance(a,target),r:a.r+v.r*hexDistance(a,target)};const dist=hexDistance(p,target);if(dist<best){best=dist;bestDir=i;}});
+          if(best<=2) return {type:'torpedo',direction:bestDir};
+        }
+      }
+      return {type:'end'};
+    }
+  };
+  function hexDistance(a,b){return (Math.abs(a.q-b.q)+Math.abs(a.r-b.r)+Math.abs(a.q+a.r-b.q-b.r))/2;}
+})();
+
+</script>
+  <script>
+(function(){
+  'use strict';
+  const N=window.Naval=window.Naval||{};
+  const CLASSES=['BB','CA','CL','DD'];
+  const CLASS_NAMES={BB:'战列舰',CA:'重巡洋舰',CL:'轻巡洋舰',DD:'驱逐舰'};
+  const CLASS_HINTS={BB:'重炮 · 坚甲',CA:'火力 · 机动',CL:'速射 · 支援',DD:'隐蔽 · 鱼雷'};
+  const CONSUMABLES={smoke:'烟幕',boost:'加力',radar:'雷达',hydro:'水听',reload:'重装填',dcp:'损管',repair:'修理'};
+  const DETECT_METHODS={near:'近距',radar:'雷达',hydro:'水听',visual:'目视',gunfire:'开火暴露',revealed:'碰撞暴露'};
+  const ZONE_NAMES={bow:'艏',stern:'艉',mid1:'中1',mid2:'中2'};
+  const fmtMp=v=>{const n=Number(v)||0;return Number.isInteger(n/2)?String(n/2):String(Math.round(n*5)/10);}
+  const DIR_NAMES=['东','东南','西南','西','西北','东北'];
+  const SVG='http://www.w3.org/2000/svg';
+  const R=18, SQ3=Math.sqrt(3);
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const def=ship=>N.DATA.ships.find(x=>x.id===ship.defId);
+  const hpPercent=ship=>Math.max(0,Math.min(100,Math.round(ship.hp/def(ship).hp*100)));
+  const fmt=n=>Math.round(n).toLocaleString('zh-CN');
+  const logText=x=>typeof x==='string'?x:String(x&&x.text||'');
+  let choices={},mode='inspect',ammo='AP',targetId=null,zoom=1,selectedId=null,toastTimer=null,initialized=false;
+  function rememberVisible(s,team,ids){
+    if(!s.lastKnown||typeof s.lastKnown!=='object')s.lastKnown={'0':{},'1':{}};
+    if(!s.lastKnown[team])s.lastKnown[team]={};
+    for(const ship of s.ships){
+      if(ship.team===team||!ids.has(ship.id))continue;
+      s.lastKnown[team][ship.id]={q:ship.q,r:ship.r,round:s.round,defId:ship.defId};
+    }
+  }
+
+  function shipVector(cls){
+    const width=cls==='BB'?84:cls==='DD'?56:72;
+    return `<svg class="ship-silhouette" viewBox="0 0 100 35" aria-hidden="true"><path d="M${50-width/2} 19 L${50-width/2+8} 24 H${50+width/2-10} L${50+width/2} 18 L${50+width/2-7} 14 H${50-width/2+7} Z" fill="currentColor" opacity=".35" stroke="currentColor" stroke-width="2"/><path d="M31 14 L38 14 L41 8 L53 8 L57 14 L68 14" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="28" cy="15" r="3" fill="currentColor"/><circle cx="73" cy="15" r="3" fill="currentColor"/></svg>`;
+  }
+  function renderSetup(){
+    const el=$('ship-selection');if(!el||!N.DATA)return;
+    for(const cls of CLASSES)if(!choices[cls])choices[cls]=N.DATA.ships.find(x=>x.cls===cls)?.id;
+    el.innerHTML=CLASSES.map(cls=>`<section class="class-group"><div class="class-heading"><span>${CLASS_NAMES[cls]}</span><small>${cls} · ${CLASS_HINTS[cls]}</small></div><div class="ship-options">${N.DATA.ships.filter(d=>d.cls===cls).map(d=>`<button class="ship-option ${choices[cls]===d.id?'selected':''}" type="button" data-ship-choice="${esc(d.id)}" aria-pressed="${choices[cls]===d.id}"><span class="ship-accent"></span><span class="ship-name">${esc(d.name)}</span><span class="ship-en">${esc(d.enName)}</span>${shipVector(cls)}<span class="ship-meta"><span>耐久 <b>${fmt(d.hp)}</b></span><span>航速 <b>${esc(d.speed)} kn</b></span><span>射程 <b>${esc(d.range)} km</b></span><span>隐蔽 <b>${esc(d.conceal)} km</b></span></span><span class="ship-tags">${esc((d.consumables||[]).map(x=>CONSUMABLES[x]||x).join(' · ')||'主炮战斗')}</span></button>`).join('')}</div></section>`).join('');
+    $('fleet-summary').innerHTML=CLASSES.map(cls=>`<div class="summary-row"><span>${CLASS_NAMES[cls]}</span><b>${esc(N.DATA.ships.find(d=>d.id===choices[cls])?.name||'未选择')}</b></div>`).join('');
+  }
+  function showSetup(){
+    $('setup-screen').hidden=false;$('game-screen').hidden=true;$('log-dock').hidden=true;$('result-modal').hidden=true;
+    $('top-stats').hidden=true;renderSetup();
+  }
+  function notice(message){const t=$('toast');if(!t)return;t.textContent=String(message||'');t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3600);}
+  function active(s){return N.Engine.active(s);}
+  function viewerTeam(s){const a=active(s);return s.sandbox&&s.manualBoth&&a?a.team:0;}
+  function detectedIds(s,team){try{return new Set(N.Engine.visible(s,team));}catch(_){return new Set();}}
+  function known(s,ship,team,ids){return ship.team===team||!!(s.sandbox&&s.fullVision)||ids.has(ship.id);}
+  function canAct(s){const a=active(s);return !!(a&&s.winner===null&&!N.App.busy&&(a.team===0||s.sandbox&&s.manualBoth));}
+  function command(cmd){if(!N.App||!N.App.state)return;N.App.command(cmd);}
+  function setMode(next){mode=next;targetId=null;render(N.App.state);}
+  function modal(id,open){$(id).hidden=!open;}
+  function center(q,r){return {x:32+SQ3*R*(q+r/2),y:34+1.5*R*r};}
+  function polygon(cx,cy,rad=R-1){const pts=[];for(let i=0;i<6;i++){const t=(60*i-90)*Math.PI/180;pts.push(`${(cx+rad*Math.cos(t)).toFixed(2)},${(cy+rad*Math.sin(t)).toFixed(2)}`);}return pts.join(' ');}
+  function svg(tag,attrs,parent){const e=document.createElementNS(SVG,tag);for(const [k,v] of Object.entries(attrs||{}))e.setAttribute(k,String(v));if(parent)parent.appendChild(e);return e;}
+  function drawShip(parent,s,definition,isActive,isSelected,statuses){
+    const p=center(s.q,s.r),g=svg('g',{class:`ship-token ${s.team===1?'enemy':'friend'} ${isActive?'active':''} ${isSelected?'selected':''}`,transform:`translate(${p.x},${p.y})`,role:'button','aria-label':`${definition.name}，耐久${fmt(s.hp)}`},parent);
+    g.dataset.shipId=s.id;
+    const description=[`${definition.name}，耐久${fmt(s.hp)}`,...statuses.map(x=>x.label)].join('，');
+    g.setAttribute('aria-label',description);
+    svg('title',{},g).textContent=description;
+    svg('rect',{x:-27,y:-18,width:54,height:55,fill:'transparent','pointer-events':'all'},g);
+    svg('circle',{class:'ship-ring',r:15},g);
+    const hull=svg('g',{transform:`rotate(${s.heading*60})`},g);
+    svg('path',{class:'wake',d:'M-12 -3 Q-19 0 -12 3'},hull);
+    svg('path',{class:'hull',d:'M-11 -5 Q-14 0 -11 5 L7 5 L13 0 L7 -5 Z'},hull);
+    svg('path',{class:'bow',d:'M8 -3 L15 0 L8 3 Z'},hull);
+    svg('rect',{class:'ship-name-tag',x:-27,y:18,width:54,height:17,rx:4},g);
+    const text=svg('text',{class:'ship-label',x:0,y:30},g);text.textContent=definition.name;
+    svg('rect',{x:-22,y:32,width:44,height:2,rx:1,fill:'#102c39'},g);
+    svg('rect',{class:'ship-hp',x:-22,y:32,width:44*hpPercent(s)/100,height:2,rx:1},g);
+    statuses.forEach((status,i)=>{
+      const badge=svg('g',{class:`ship-status-badge ${status.kind}`,transform:`translate(${(i-(statuses.length-1)/2)*18},-22)`},g);
+      svg('title',{},badge).textContent=status.label;
+      svg('rect',{x:-8,y:-7,width:16,height:14,rx:4},badge);
+      svg('text',{x:0,y:4},badge).textContent=status.symbol;
+    });
+    return g;
+  }
+  function shipStatuses(state,ship,team,ids){
+    const statuses=[];
+    const spotted=N.Engine.detection(state,ship.team,ship.id).detected;
+    if(spotted)statuses.push({kind:'detected',symbol:'!',label:ship.team===team?'已被敌方发现':'已被我方发现'});
+    if(ship.fires)statuses.push({kind:'burning',symbol:`火${ship.fires}`,label:`着火：${ship.fires} 处火灾`});
+    if(ship.flood)statuses.push({kind:'flooding',symbol:'水',label:'进水中'});
+    return statuses;
+  }
+  function renderBoard(s,team,ids,a){
+    const board=$('battle-svg'),vp=$('board-viewport');
+    const prevX=vp.scrollLeft,prevY=vp.scrollTop;
+    board.replaceChildren();
+    const W=SQ3*R*(s.width-1+(s.height-1)/2)+64,H=1.5*R*(s.height-1)+78;
+    board.setAttribute('viewBox',`0 0 ${W} ${H}`);board.setAttribute('width',W);board.setAttribute('height',H);
+    board.style.width=`${Math.max(280,vp.clientWidth*zoom)}px`;
+    const cellLayer=svg('g',{'aria-label':'海域网格'},board);
+    const moveSet=new Set(mode==='move'&&canAct(s)&&a?N.Engine.moves(s,a.id).map(x=>`${x.q},${x.r}`):[]);
+    const islandSet=new Set(s.islands.map(x=>`${x.q},${x.r}`));
+    for(let r=0;r<s.height;r++)for(let q=0;q<s.width;q++){
+      const p=center(q,r),key=`${q},${r}`,island=islandSet.has(key),objective=N.Engine.hexDistance({q,r},{q:12,r:9})<=2;
+      const cell=svg('polygon',{points:polygon(p.x,p.y),class:island?'island-cell':`hex-cell ${(q+r)%3===0?'alt':''} ${objective?'objective-cell':''} ${moveSet.has(key)?'reachable':''}`, 'data-q':q,'data-r':r},cellLayer);
+      if(island){svg('path',{class:'island-hatch',d:`M${p.x-7} ${p.y+3}l5 -12 5 8 4 -5 5 14z`},cellLayer);}else if((q+r)%7===0){const lab=svg('text',{class:'grid-label',x:p.x-11,y:p.y-7},cellLayer);lab.textContent=`${q}.${r}`;}
+      cell.addEventListener('click',()=>onCell(q,r,moveSet.has(key)));
+    }
+    const objective=center(12,9),objLabel=svg('text',{class:'objective-label',x:objective.x,y:objective.y-17,'text-anchor':'middle'},board);objLabel.textContent='◆ 中央据点 · 半径2';
+    const effects=svg('g',{'pointer-events':'none'},board);
+    for(const m of s.smokes||[]){
+      if(!Number.isInteger(m.q)||!Number.isInteger(m.r)||m.expires<s.round)continue;
+      for(let rr=0;rr<s.height;rr++)for(let qq=0;qq<s.width;qq++)if(N.Engine.hexDistance(m,{q:qq,r:rr})<=1){const p=center(qq,rr);svg('polygon',{class:'smoke-cell',points:polygon(p.x,p.y,R-2)},effects);}
+      const hub=center(m.q,m.r),left=Math.max(0,m.expires-s.round+1),smokeLab=svg('text',{class:'smoke-label',x:hub.x,y:hub.y+4,'text-anchor':'middle'},effects);
+      smokeLab.textContent=`烟 ${left}`;
+    }
+    const remembered=s.lastKnown?.[team]||{};
+    for(const [id,mark] of Object.entries(remembered)){
+      if(ids.has(id)||!Number.isInteger(mark.q)||!Number.isInteger(mark.r))continue;
+      const p=center(mark.q,mark.r),d=N.DATA.ships.find(x=>x.id===mark.defId),ghost=svg('g',{class:'ghost-contact'},effects);
+      svg('circle',{cx:p.x,cy:p.y,r:13},ghost);const symbol=svg('text',{x:p.x,y:p.y+4,'text-anchor':'middle'},ghost);symbol.textContent='?';
+      const label=svg('text',{x:p.x,y:p.y+29,'text-anchor':'middle'},ghost);label.textContent=`${d?.name||'目标'} · 第${mark.round}轮`;}
+    const torpDirections=N.Engine.dirs||[];
+    for(const t of s.torpedoes||[]){if(!Number.isInteger(t.q)||!Number.isInteger(t.r))continue;if(t.team!==team&&!(s.sandbox&&s.fullVision)&&!(Array.isArray(t.detectedBy)&&t.detectedBy.includes(team)))continue;const p=center(t.q,t.r),dir=torpDirections[t.direction??t.heading],remaining=Math.min(Number(t.remaining)||0,7);if(dir&&remaining>0){const far=center(t.q+dir.q*remaining,t.r+dir.r*remaining);svg('line',{class:'torpedo-trail',x1:p.x,y1:p.y,x2:far.x,y2:far.y},effects);}svg('path',{class:'torpedo-marker',d:`M${p.x-4} ${p.y+4} L${p.x+7} ${p.y} L${p.x-4} ${p.y-4} Z`,transform:`rotate(${(t.heading||0)*60},${p.x},${p.y})`},effects);}
+    if(a&&a.team===team&&selectedId===a.id){
+      const p=center(a.q,a.r),d=def(a),guide=svg('g',{class:'range-guide','pointer-events':'none'},board);
+      const det=typeof N.Engine.detection==='function'?N.Engine.detection(s,a.team,a.id):null;
+      const radius=Number(det?.radius??d.conceal)||0;
+      svg('circle',{cx:p.x,cy:p.y,r:SQ3*R*Number(d.range||0),class:'gun-range'},guide);
+      svg('circle',{cx:p.x,cy:p.y,r:SQ3*R*radius,class:'detect-range'},guide);
+      for(const t of d.turrets||[]){const centerDeg=a.heading*60+Number(t.bearing||0),half=Number(t.arc||360)/2,rad=50,start=(centerDeg-half)*Math.PI/180,end=(centerDeg+half)*Math.PI/180,from={x:p.x+rad*Math.cos(start),y:p.y+rad*Math.sin(start)},to={x:p.x+rad*Math.cos(end),y:p.y+rad*Math.sin(end)},large=Number(t.arc||360)>180?1:0;svg('path',{class:'turret-arc',d:`M${from.x} ${from.y} A${rad} ${rad} 0 ${large} 1 ${to.x} ${to.y}`},guide);}
+      if(d.torpedo){const directions=N.Engine.dirs||[],selected=Number($('torpedo-dir').value),allowed=typeof N.Engine.torpedoDirections==='function'?N.Engine.torpedoDirections(s,a.id):[1,2,4,5].map(n=>(a.heading+n)%6);if(allowed.includes(selected)){const count=Math.max(1,Number(d.torpedo.count)||1),offsets=[-1,0,1].filter(off=>allowed.includes((selected+off+6)%6)).slice(0,count);for(const off of offsets){const dir=directions[(selected+off+6)%6];if(!dir)continue;const length=Math.min(7,Number(d.torpedo.range)||5),far=center(a.q+dir.q*length,a.r+dir.r*length);svg('line',{class:'torpedo-preview-ray',x1:p.x,y1:p.y,x2:far.x,y2:far.y},guide);}}}
+    }
+    const ships=svg('g',{},board);
+    for(const ship of s.ships){if(!known(s,ship,team,ids)||ship.hp<=0)continue;const d=def(ship);if(!d)continue;const g=drawShip(ships,ship,d,a&&a.id===ship.id,selectedId===ship.id||targetId===ship.id,shipStatuses(s,ship,team,ids));g.addEventListener('click',e=>{e.stopPropagation();onShip(ship,team,ids);});g.addEventListener('dblclick',e=>{e.stopPropagation();selectedId=ship.id;render(s);});}
+    if(targetId&&a){const target=s.ships.find(x=>x.id===targetId);if(target&&target.hp>0&&known(s,target,team,ids)){const p1=center(a.q,a.r),p2=center(target.q,target.r);svg('line',{class:'attack-line',x1:p1.x,y1:p1.y,x2:p2.x,y2:p2.y,'pointer-events':'none'},board);svg('circle',{class:'target-ring',cx:p2.x,cy:p2.y,r:19,'pointer-events':'none'},board);}}
+    vp.scrollLeft=prevX;vp.scrollTop=prevY;
+  }
+  function onCell(q,r,reachable){const s=N.App.state;if(!s||!canAct(s))return;if(mode==='move'){if(reachable)command({type:'move',q,r});else notice('该六角格不可到达');}else if(s.sandbox&&mode==='place'){const sel=$('place-ship').value;if(sel)command({type:'sandbox',action:'place',shipId:sel,q,r});}else notice('先选择移动或开火指令');}
+  function onShip(ship,team,ids){const s=N.App.state,a=active(s);selectedId=ship.id;
+    if(!a||ship.team===a.team){render(s);return;}
+    if(!known(s,ship,team,ids))return;
+    if(mode==='fire'&&canAct(s)&&targetId===ship.id){fireSelected();return;}
+    targetId=ship.id;mode='fire';render(s);
+  }
+  function fireSelected(){const s=N.App.state,a=s&&active(s),t=s&&s.ships.find(x=>x.id===targetId);if(!a||!t||!canAct(s)){notice('请选择可见敌舰');return;}const team=viewerTeam(s),ids=detectedIds(s,team);if(!known(s,t,team,ids)||t.team===a.team){notice('目标不可见');return;}const p=N.Engine.preview(s,a.id,t.id,ammo);if(!p.legal){notice(p.reason||'当前无法开火');return;}command({type:'fire',target:t.id,ammo});targetId=null;}
+  function renderFleet(s,team,ids,a){
+    const own=s.ships.filter(x=>x.team===team),enemies=s.ships.filter(x=>x.team!==team&&known(s,x,team,ids)&&x.hp>0);
+    document.querySelector('.fleet-panel .panel-heading span').textContent=team===0?'我方舰队':'沙盒操控舰队';
+    document.querySelector('.fleet-panel .enemy-heading span').textContent=team===0?'敌情观察':'对方观察';
+    $('fleet-list').innerHTML=own.map(x=>{const d=def(x);return `<div class="fleet-item ${x.hp<=0?'dead':''} ${a?.id===x.id?'active':''}" data-ship-focus="${esc(x.id)}"><div class="row"><strong>${esc(d?.name||'未知舰船')}</strong><small>${esc(d?.cls||'')}</small></div><div class="hp-track"><i style="width:${hpPercent(x)}%"></i></div><div class="hp-value">${fmt(Math.max(0,x.hp))} / ${fmt(d.hp)} · ${DIR_NAMES[x.heading]||'—'}</div></div>`;}).join('');
+    $('enemy-list').innerHTML=enemies.length?enemies.map(x=>{const d=def(x);return `<div class="contact-item" data-ship-focus="${esc(x.id)}"><div class="row"><strong>${esc(d?.name||'未知目标')}</strong><small>${esc(d?.cls||'')}</small></div><div class="hp-track"><i style="width:${hpPercent(x)}%"></i></div><div class="hp-value">${fmt(Math.max(0,x.hp))} / ${fmt(d.hp)}</div></div>`;}).join(''):'<div class="unknown-contact">暂无已发现目标。接近、使用侦察消耗品或改变阵位。</div>';
+    $('queue-list').innerHTML=s.queue.map(id=>{const x=s.ships.find(y=>y.id===id);if(!x)return '';const visible=known(s,x,team,ids);const name=visible?def(x)?.name||'未知舰船':`未知敌舰`;return `<span class="queue-chip ${x.team===0?'friend':'enemy'} ${a?.id===id?'current':''}">${esc(name)}</span>`;}).join('');
+  }
+  function fireZoneText(ship){
+    const z=ship.fireZones||{};
+    const lit=['bow','stern','mid1','mid2'].filter(k=>z[k]).map(k=>ZONE_NAMES[k]);
+    return lit.length?`火区 ${lit.join('/')}`:'';
+  }
+  function renderActive(s,a,team,ids){
+    const box=$('active-card');if(!a){box.innerHTML='<strong>等待下一艘舰船</strong>';return;}
+    const hidden=a.team!==team&&!known(s,a,team,ids),d=hidden?null:def(a);
+    box.classList.toggle('enemy',a.team===1);
+    if(hidden){box.innerHTML='<div class="top"><strong>敌方行动中</strong><span class="class-pill">未识别</span></div><div class="sub">正在等待海域信息更新</div>';return;}
+    const det=typeof N.Engine.detection==='function'?N.Engine.detection(s,a.team,a.id):null;
+    const spotted=det?.detected?`已被发现 · ${DETECT_METHODS[det.method]||det.method} · 隐蔽 ${Number(det.radius||0).toFixed(1)} km`:`隐蔽 ${Number(det?.radius??d.conceal).toFixed(1)} km`;
+    const repairBits=[];
+    if((d.consumables||[]).includes('repair')){
+      repairBits.push(`可修 ${fmt(Math.max(0,a.repairable||0))}`);
+      if(a.repairTicks?.length)repairBits.push(`修理剩 ${a.repairTicks.length} 轮`);
+      else if((a.cooldowns?.repair||0)>s.round)repairBits.push(`修理冷却至 ${a.cooldowns.repair}`);
+      else if((a.charges?.repair||0)!==0)repairBits.push(`修理×${a.charges.repair===-1?'∞':a.charges.repair}`);
+    }
+    const status=[a.fires?`🔥 ${fireZoneText(a)||('火灾 '+a.fires)}`:'',a.flood?'≈ 进水':'',a.effects?.smoke?'◌ 烟幕道具':'',a.effects?.repair?'✚ 修理中':'',...repairBits,spotted].filter(Boolean).join(' · ');
+    box.innerHTML=`<div class="top"><strong>${esc(d.name)}</strong><span class="class-pill">${esc(CLASS_NAMES[d.cls])}</span></div><div class="sub">${a.team===0?'我方':'敌方'} · ${esc(d.enName)} · 航向 ${esc(DIR_NAMES[a.heading])}</div><div class="vitals"><span>耐久 ${fmt(Math.max(0,a.hp))}/${fmt(d.hp)}</span><span>机动 ${esc(fmtMp(a.mp??0))}</span></div><div class="hp-track"><i style="width:${hpPercent(a)}%"></i></div><div class="status">${esc(status)}</div>`;
+  }
+  function renderActions(s,a,team,ids){
+    const actionable=canAct(s),hidden=a&&a.team!==team&&!known(s,a,team,ids),d=a&&!hidden?def(a):null;
+    const may=actionable&&!hidden;
+    $('mode-move').disabled=!may||!a||a.mp<=0||a.attacked;$('mode-move').classList.toggle('selected',mode==='move');
+    $('turn-left').disabled=!may||!a||a.mp<1||a.attacked;$('turn-right').disabled=!may||!a||a.mp<1||a.attacked;
+    $('end-turn').disabled=!may;
+    $('ammo-ap').disabled=!may||!d?.ap;$('ammo-he').disabled=!may||!d?.he;
+    $('ammo-ap').classList.toggle('selected',ammo==='AP');$('ammo-he').classList.toggle('selected',ammo==='HE');
+    $('mode-fire').disabled=!may||!d||a.fired||a.gunReady>s.round;
+    $('mode-fire').classList.toggle('selected',mode==='fire');
+    $('gun-ready-label').textContent=!a||hidden?'':a.gunReady>s.round?`冷却至第 ${a.gunReady} 轮`:a.fired?'本次已开火':'可开火';
+    const torpDirs=a&&d?.torpedo?(typeof N.Engine.torpedoDirections==='function'?N.Engine.torpedoDirections(s,a.id):[1,2,4,5].map(n=>(a.heading+n)%6)):[];
+    const dirSelect=$('torpedo-dir');for(const opt of dirSelect.options)opt.disabled=!torpDirs.includes(Number(opt.value));
+    if(torpDirs.length&&!torpDirs.includes(Number(dirSelect.value)))dirSelect.value=String(torpDirs[0]);
+    $('torpedo-fire').disabled=!may||!d?.torpedo||a.torped||a.torpReady>s.round||!torpDirs.length;
+    dirSelect.disabled=!may||!d?.torpedo||!torpDirs.length;
+    const torpWait=d?.torpedo?Math.max(0,a.torpReady-s.round):0;
+    $('torpedo-ready-label').textContent=!d?.torpedo?'':torpWait?`装填中 · 剩 ${torpWait} 轮`:a.torped?'本次已发射':'已装填';
+    $('torpedo-fire').textContent=torpWait?'装填中':'发射';
+    $('torpedo-note').textContent=d?.torpedo?`装填 ${d.torpedo.reload} 秒 → ${Math.ceil(d.torpedo.reload/10)} 轮（每轮 10 秒）。${torpWait?`第 ${a.torpReady} 轮就绪，剩余约 ${torpWait*10} 秒规则时间。`:""}本舰 ${d.torpedo.count} 具鱼雷发射管；地图用至多 3 道雷束简化齐射。仅侧舷方向可选。`:'该舰没有鱼雷武器。';
+    const list=$('consumable-list');list.replaceChildren();
+    if(!d||!d.consumables?.length){list.textContent='该舰无可用消耗品';}else for(const id of d.consumables){
+      const charges=a?.charges?.[id],cool=a?.cooldowns?.[id];
+      const repairing=id==='repair'&&a?.repairTicks?.length;
+      const button=document.createElement('button');button.type='button';button.className='action-btn consumable-item';
+      button.disabled=!may||charges===0||repairing||(Number.isFinite(cool)&&cool>s.round)||!!a?.effects?.[id];
+      const label=document.createElement('span');label.textContent=CONSUMABLES[id]||id;
+      const sub=document.createElement('small');
+      if(repairing)sub.textContent=`进行中 · 剩 ${a.repairTicks.length} 轮 · 可修 ${fmt(a.repairable||0)}`;
+      else if(Number.isFinite(cool)&&cool>s.round)sub.textContent=`冷却至 ${cool} 轮`;
+      else if(id==='repair')sub.textContent=`剩余 ${charges===-1?'∞':charges} · 可修 ${fmt(a.repairable||0)}`;
+      else sub.textContent=charges===-1?'无限':charges===undefined?'—':`剩余 ${charges}`;
+      button.append(label,sub);button.addEventListener('click',()=>command({type:'consumable',id}));list.appendChild(button);
+    }
+    const preview=$('attack-preview');preview.classList.remove('legal','illegal');
+    const target=s.ships.find(x=>x.id===targetId);
+    if(target&&a&&target.team!==a.team&&known(s,target,team,ids)){
+      const p=N.Engine.preview(s,a.id,target.id,ammo),td=def(target);
+      preview.classList.add(p.legal?'legal':'illegal');
+      const apOdds=ammo==='AP'&&p.outcomes?`跳弹 ${Math.round((p.outcomes.ricochet||0)*100)}% / 未穿 ${Math.round((p.outcomes.no_pen||0)*100)}% / 过穿 ${Math.round((p.outcomes.overpen||0)*100)}% / 穿透 ${Math.round((p.outcomes.pen||0)*100)}% / 核心 ${Math.round((p.outcomes.citadel||0)*100)}% · `:`${ammo==='AP'?`跳弹 ${Math.round((p.ricochetChance||0)*100)}% · `:''}`;
+      preview.textContent=`${td.name} · ${p.distance??'—'} km · 入射角 ${Math.round(p.angle||0)}° · ${p.guns??0} 门炮 / ${p.shells??0} 发 · ${apOdds}${p.legal?`命中 ${Math.round((p.hitChance||0)*100)}% · 预估 ${fmt(p.expectedDamage||0)} 伤害。再次点击目标或按开火按钮。`:(p.reason||'不在射界内')}`;
+      $('mode-fire').textContent=p.legal?'◎ 向目标开火':'◎ 选择目标开火';
+    }else{preview.textContent='点击已发现敌舰，查看射界与命中预估。';$('mode-fire').textContent='◎ 选择目标开火';}
+    $('sandbox-controls').hidden=!s.sandbox;
+    if(s.sandbox){$('sandbox-vision').textContent=`全图视野：${s.fullVision?'开':'关'}`;$('sandbox-manual').textContent=`双方手动：${s.manualBoth?'开':'关'}`;const place=$('place-ship'),old=place.value;place.innerHTML=s.ships.map(x=>`<option value="${esc(x.id)}">${x.team===0?'我':'敌'} · ${esc(def(x)?.name||x.id)}</option>`).join('');if(s.ships.some(x=>x.id===old))place.value=old;}
+  }
+  function renderLog(s,team){
+    const logs=(s.logs||[]).filter(x=>x&&(!('team'in x)||x.team===null||x.team===team||s.sandbox&&s.fullVision)).slice(-60);
+    const el=$('battle-log');el.replaceChildren();if(!logs.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='战斗刚刚开始，等待第一条战报。';el.appendChild(empty);return;}
+    for(const item of logs){const row=document.createElement('div');row.className='entry '+(item.team===0?'ally':item.team===1?'enemy':'system');row.textContent=logText(item);el.appendChild(row);}el.scrollTop=el.scrollHeight;
+  }
+  function render(s){
+    if(!s){showSetup();return;}
+    $('setup-screen').hidden=true;$('game-screen').hidden=false;$('log-dock').hidden=false;$('top-stats').hidden=false;
+    const a=active(s),team=viewerTeam(s),ids=detectedIds(s,team);
+    rememberVisible(s,team,ids);
+    if(!selectedId&&a&&a.team===team)selectedId=a.id;
+    if(targetId){const t=s.ships.find(x=>x.id===targetId);if(!t||t.hp<=0||!known(s,t,team,ids))targetId=null;}
+    $('round-value').textContent=String(s.round);$('score-friend').textContent=String(s.scores?.[0]??0);$('score-enemy').textContent=String(s.scores?.[1]??0);
+    $('turn-label').textContent=s.winner!==null?'战斗结束':!a?'整队待命':a.team===0?`我方 · ${def(a)?.name||'舰船'}行动`:s.sandbox&&s.manualBoth?`沙盒 · 敌方${def(a)?.name||'舰船'}行动`:'敌方行动中';
+    $('board-hint').textContent=mode==='move'?'选择高亮六角格移动':mode==='fire'?'选择已发现敌舰预览与开火':mode==='place'?'点击海图为沙盒舰船摆位':'选择行动，点击海图目标';
+    renderFleet(s,team,ids,a);renderActive(s,a,team,ids);renderActions(s,a,team,ids);renderBoard(s,team,ids,a);renderLog(s,team);
+    if(s.winner!==null){const text=s.winner==='draw'?'平局':s.winner===0?'我方获胜':'敌方获胜';$('result-title').textContent=text;$('result-symbol').textContent=s.winner===0?'✦':s.winner===1?'◈':'◇';$('result-detail').textContent=`战斗进行至第 ${s.round} 轮。比分 ${s.scores[0]} : ${s.scores[1]}。可保存战报或重新组建舰队。`;modal('result-modal',true);}else modal('result-modal',false);
+  }
+  function init(){
+    if(initialized)return;initialized=true;
+    $('ship-selection').addEventListener('click',e=>{const btn=e.target.closest('[data-ship-choice]');if(!btn)return;const d=N.DATA.ships.find(x=>x.id===btn.dataset.shipChoice);if(d){choices[d.cls]=d.id;renderSetup();}});
+    $('random-seed-btn').addEventListener('click',()=>{$('seed-input').value=String(Math.floor(Math.random()*4294967295));});
+    const start=sandbox=>{const fleet=CLASSES.map(c=>choices[c]);if(fleet.some(x=>!x)){notice('请为每个舰型选择一艘舰船');return;}const seed=Number($('seed-input').value);if(!Number.isInteger(seed)||seed<0||seed>4294967295){notice('请输入 0 到 4294967295 的整数种子');return;}mode='inspect';targetId=null;selectedId=null;zoom=1;N.App.start(fleet,seed,sandbox);};
+    $('start-btn').addEventListener('click',()=>start(false));$('sandbox-btn').addEventListener('click',()=>start(true));
+    $('resume-btn').addEventListener('click',()=>N.App.resume());
+    $('save-btn').addEventListener('click',()=>{if(!N.App.state){notice('请先开始战斗');return;}N.App.exportSave();});
+    $('load-btn').addEventListener('click',()=>$('save-file').click());
+    $('save-file').addEventListener('change',e=>{if(e.target.files?.[0])N.App.importSave(e.target.files[0]);e.target.value='';});
+    $('replay-btn').addEventListener('click',()=>{if(!N.App.state){notice('请先开始战斗');return;}N.App.replay();});
+    $('restart-btn').addEventListener('click',()=>N.App.restart());
+    $('help-btn').addEventListener('click',()=>modal('help-modal',true));
+    document.querySelectorAll('[data-close]').forEach(x=>x.addEventListener('click',()=>modal(x.dataset.close,false)));
+    $('help-modal').addEventListener('click',e=>{if(e.target===$('help-modal'))modal('help-modal',false);});
+    $('mode-move').addEventListener('click',()=>setMode('move'));
+    $('turn-left').addEventListener('click',()=>command({type:'turn',delta:-1}));
+    $('turn-right').addEventListener('click',()=>command({type:'turn',delta:1}));
+    $('end-turn').addEventListener('click',()=>{targetId=null;mode='inspect';command({type:'end'});});
+    $('ammo-ap').addEventListener('click',()=>{ammo='AP';render(N.App.state);});$('ammo-he').addEventListener('click',()=>{ammo='HE';render(N.App.state);});
+    $('mode-fire').addEventListener('click',()=>{if(targetId)fireSelected();else setMode('fire');});
+    $('torpedo-fire').addEventListener('click',()=>command({type:'torpedo',direction:Number($('torpedo-dir').value)}));
+    $('torpedo-dir').addEventListener('change',()=>{if(N.App.state)render(N.App.state);});
+    $('sandbox-vision').addEventListener('click',()=>command({type:'sandbox',action:'fullVision'}));
+    $('sandbox-manual').addEventListener('click',()=>command({type:'sandbox',action:'manualBoth'}));
+    $('place-btn').addEventListener('click',()=>{const q=Number($('place-q').value),r=Number($('place-r').value);if(!Number.isInteger(q)||!Number.isInteger(r)||q<0||q>24||r<0||r>18){notice('请输入有效的 q/r 坐标');return;}command({type:'sandbox',action:'place',shipId:$('place-ship').value,q,r});});
+    $('fleet-list').addEventListener('click',e=>{const x=e.target.closest('[data-ship-focus]');if(!x)return;const s=N.App.state,ship=s.ships.find(y=>y.id===x.dataset.shipFocus);if(ship)onShip(ship,viewerTeam(s),detectedIds(s,viewerTeam(s)));});
+    $('enemy-list').addEventListener('click',e=>{const x=e.target.closest('[data-ship-focus]');if(!x)return;const s=N.App.state,ship=s.ships.find(y=>y.id===x.dataset.shipFocus);if(ship)onShip(ship,viewerTeam(s),detectedIds(s,viewerTeam(s)));});
+    $('zoom-in').addEventListener('click',()=>setZoom(zoom+.2));$('zoom-out').addEventListener('click',()=>setZoom(zoom-.2));$('zoom-reset').addEventListener('click',()=>setZoom(1));
+    $('log-toggle').addEventListener('click',()=>{$('log-dock').classList.toggle('collapsed');$('log-toggle').textContent=$('log-dock').classList.contains('collapsed')?'⌃':'⌄';});
+    $('result-save').addEventListener('click',()=>N.App.exportSave());$('result-restart').addEventListener('click',()=>N.App.restart());
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')modal('help-modal',false);});
+    window.addEventListener('resize',()=>{if(N.App?.state)renderBoard(N.App.state,viewerTeam(N.App.state),detectedIds(N.App.state,viewerTeam(N.App.state)),active(N.App.state));});
+    renderSetup();
+  }
+  function setZoom(value){zoom=Math.min(3,Math.max(.7,Math.round(value*10)/10));$('zoom-label').textContent=`${Math.round(zoom*100)}%`;if(N.App.state)renderBoard(N.App.state,viewerTeam(N.App.state),detectedIds(N.App.state,viewerTeam(N.App.state)),active(N.App.state));}
+  N.UI={init,render,showSetup,notice};
+})();
+
+</script>
+  <script>
+(function(){
+  'use strict';
+  const N=window.Naval=window.Naval||{};
+  let timer=null, epoch=0, steps=0, actorId=null;
+  const KEY='naval-hex-save-v2';
+  const SAVE_VERSION=2;
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  const App=N.App={state:null,busy:false,
+    start(fleet,seed,sandbox=false){
+      clearTimeout(timer);epoch++;steps=0;actorId=null;
+      const enemyFleet=['BB','CA','CL','DD'].map((c,i)=>{const list=N.DATA.ships.filter(d=>d.cls===c);return (list.find(d=>d.id!==fleet[i])||list[0]).id;});
+      this.state=N.Engine.create({fleet,enemyFleet,seed:Number(seed)||1945,sandbox:!!sandbox});
+      this.state.fullVision=!!sandbox;this.state.manualBoth=!!sandbox;
+      this.state.initialSetup={fleet:[...fleet],enemyFleet,seed:Number(seed)||1945,sandbox:!!sandbox};
+      this.busy=false;this.render();this.saveLocal();this.schedule();
+    },
+    command(cmd){
+      const s=this.state;if(!s)return;
+      if(cmd.type==='sandbox'){
+        if(!s.sandbox)return;
+        if(cmd.action==='fullVision')s.fullVision=!s.fullVision;
+        if(cmd.action==='manualBoth')s.manualBoth=!s.manualBoth;
+        if(cmd.action==='place'){
+          const ship=s.ships.find(x=>x.id===cmd.shipId);
+          const q=Number(cmd.q),r=Number(cmd.r);
+          if(ship&&Number.isInteger(q)&&Number.isInteger(r)&&q>=0&&q<s.width&&r>=0&&r<s.height&&!s.islands.some(x=>x.q===q&&x.r===r)&&!s.ships.some(x=>x.hp>0&&x.id!==ship.id&&x.q===q&&x.r===r)){
+            ship.q=q;ship.r=r;
+            s.history.push({type:'sandbox',action:'place',shipId:ship.id,q,r});
+          }
+        }
+        this.render();this.saveLocal();this.schedule();return;
+      }
+      const a=N.Engine.active(s);
+      if(this.busy||(!s.manualBoth&&a&&a.team===1))return;
+      const result=N.Engine.act(s,cmd);
+      if(!result.ok){this.notice(result.reason||'当前无法执行此操作');return;}
+      this.render();this.saveLocal();this.schedule();
+    },
+    render(){N.UI.render(this.state);},
+    notice(text){if(N.UI.notice)N.UI.notice(text);else {const e=document.getElementById('notice');if(e)e.textContent=text;else console.info(text);}},
+    schedule(){
+      clearTimeout(timer);const s=this.state;if(!s||s.winner!==null)return;
+      const a=N.Engine.active(s);if(!a||a.team===0||s.manualBoth){this.busy=false;return;}
+      this.busy=true;const token=epoch;timer=setTimeout(()=>{if(token===epoch)this.aiTick();},420);
+    },
+    observation(){
+      const s=this.state,a=N.Engine.active(s),d=N.DATA.ships.find(x=>x.id===a.defId),ids=N.Engine.visible(s,a.team);
+      const enemies=s.ships.filter(x=>x.hp>0&&x.team!==a.team&&ids.includes(x.id)).map(x=>({id:x.id,q:x.q,r:x.r,heading:x.heading,hp:x.hp,defId:x.defId}));
+      const attacks=[];
+      for(const e of enemies)for(const ammo of ['AP','HE'])if(d[ammo.toLowerCase()])attacks.push({target:e.id,ammo,preview:N.Engine.preview(s,a.id,e.id,ammo)});
+      const center={q:12,r:9};
+      const torpedoes=(s.torpedoes||[]).filter(t=>t.team===a.team||(t.detectedBy||[]).includes(a.team)).map(t=>({q:t.q,r:t.r,heading:t.heading}));
+      return {actor:clone(a),definition:clone(d),enemies,attacks,moves:N.Engine.moves(s,a.id),torpedoes,torpedoDirections:N.Engine.torpedoDirections?N.Engine.torpedoDirections(s,a.id):[0,1,2,3,4,5],center,centerDistance:N.Engine.hexDistance(a,center),round:s.round,stage:steps,available:d.consumables.filter(id=>((a.charges[id]||0)>0||a.charges[id]===-1)&&(a.cooldowns[id]||0)<=s.round&&!a.effects[id]&&!(id==='repair'&&a.repairTicks))};
+    },
+    aiTick(){
+      const s=this.state;if(!s||s.winner!==null){this.busy=false;this.render();return;}
+      const a=N.Engine.active(s);if(!a||a.team===0||s.manualBoth){this.busy=false;this.render();return;}
+      if(actorId!==a.id){actorId=a.id;steps=0;}
+      let cmd=steps>7?{type:'end'}:N.AI.choose(this.observation());
+      steps++;
+      if(cmd){const result=N.Engine.act(s,cmd);if(!result.ok&&steps>3)N.Engine.act(s,{type:'end'});}
+      this.busy=false;this.render();this.saveLocal();this.schedule();
+    },
+    restart(){clearTimeout(timer);epoch++;this.busy=false;this.state=null;N.UI.showSetup();},
+    exportSave(){if(!this.state)return;const payload={format:'naval-hex',version:SAVE_VERSION,dataVersion:N.DATA.version,state:this.state};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='海战棋-第'+this.state.round+'轮.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);},
+    importSave(file){if(!file)return;if(file.size>5*1024*1024){this.notice('存档超过 5 MB');return;}const reader=new FileReader();reader.onload=()=>{try{this.loadPayload(JSON.parse(reader.result));}catch(e){this.notice('无法读取存档：'+e.message);}};reader.readAsText(file);},
+    loadPayload(payload){
+      if(!payload||payload.format!=='naval-hex')throw new Error('存档格式不匹配');
+      if(payload.version!==SAVE_VERSION)throw new Error(payload.version===1?'旧版 v1 存档与当前规则不兼容，请重新开局':'存档版本不匹配');
+      if(payload.dataVersion!==N.DATA.version)throw new Error('舰船数据版本不匹配');
+      const s=payload.state;if(!s||!Array.isArray(s.ships)||s.ships.length!==8||!Array.isArray(s.queue)||!Array.isArray(s.history)||!Array.isArray(s.islands)||!Array.isArray(s.scores)||s.scores.length!==2||!Number.isInteger(s.round)||s.round<1||s.round>10000)throw new Error('存档结构无效');
+      for(const ship of s.ships){
+        if(!N.DATA.ships.some(d=>d.id===ship.defId)||!Number.isFinite(ship.hp)||!Number.isInteger(ship.q)||!Number.isInteger(ship.r)||ship.q<0||ship.q>=25||ship.r<0||ship.r>=19||![0,1].includes(ship.team))throw new Error('舰船数据无效');
+        if(!ship.effects||!ship.charges||!ship.cooldowns||!Number.isInteger(ship.heading)||ship.heading<0||ship.heading>5)throw new Error('舰船状态无效');
+        if(!Number.isFinite(ship.mp)||ship.mp<0)throw new Error('机动点无效');
+        if(ship.fireZones&&typeof ship.fireZones==='object'){for(const k of ['bow','stern','mid1','mid2'])if(ship.fireZones[k]!=null&&!Number.isFinite(ship.fireZones[k]))throw new Error('火区状态无效');}
+        if(ship.repairable!=null&&!Number.isFinite(ship.repairable))throw new Error('可修复池无效');
+        if(ship.repairTicks!=null&&(!Array.isArray(ship.repairTicks)||ship.repairTicks.some(x=>!Number.isFinite(x))))throw new Error('修理进度无效');
+      }
+      if(!Array.isArray(s.torpedoes)||!Array.isArray(s.smokes)||!Array.isArray(s.logs)||!Number.isFinite(s.rng)||!Number.isInteger(s.turnIndex)||s.turnIndex<0||(s.winner===null&&s.turnIndex>=s.queue.length)||s.width!==25||s.height!==19||![null,0,1,'draw'].includes(s.winner))throw new Error('战斗状态无效');
+      if(new Set(s.ships.map(x=>x.id)).size!==8||s.queue.some(id=>!s.ships.some(x=>x.id===id)))throw new Error('舰船队列无效');
+      s.version=SAVE_VERSION;
+      clearTimeout(timer);epoch++;this.state=s;this.busy=false;actorId=null;steps=0;this.render();this.saveLocal();this.schedule();
+    },
+    saveLocal(){try{localStorage.setItem(KEY,JSON.stringify({format:'naval-hex',version:SAVE_VERSION,dataVersion:N.DATA.version,state:this.state}));}catch(_){}},
+    resume(){try{const raw=localStorage.getItem(KEY);if(!raw){this.notice('没有自动存档，请导入 JSON 存档');return;}this.loadPayload(JSON.parse(raw));}catch(e){this.notice('自动存档不可用：'+e.message);}},
+    replay(){
+      if(!this.state||!this.state.initialSetup)return;
+      const setup=this.state.initialSetup,actions=clone(this.state.history),old=this.state;
+      const fresh=N.Engine.create(setup);
+      for(const cmd of actions){if(cmd.type==='sandbox'){if(cmd.action==='place'){const a=fresh.ships.find(x=>x.id===cmd.shipId);if(a){a.q=cmd.q;a.r=cmd.r;fresh.history.push(cmd);}}continue;}const r=N.Engine.act(fresh,cmd);if(!r.ok){this.notice('重放在指令 '+fresh.history.length+' 处失败');return;}}
+      const same=fresh.rng===old.rng&&JSON.stringify(fresh.scores)===JSON.stringify(old.scores)&&fresh.ships.every((x,i)=>{
+        const y=old.ships[i];
+        return x.hp===y.hp&&x.q===y.q&&x.r===y.r&&x.heading===y.heading&&Math.abs((x.repairable||0)-(y.repairable||0))<1e-6&&JSON.stringify(x.fireZones||{})===JSON.stringify(y.fireZones||{});
+      });
+      this.notice(same?'重放校验通过：位置、血量、比分、火区、修理池和随机状态一致':'重放结果存在差异');
+    }
+  };
+  document.addEventListener('DOMContentLoaded',()=>{N.UI.init();N.UI.showSetup();});
+})();
+
+</script>
+</body>
+</html>
